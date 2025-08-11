@@ -24,19 +24,18 @@
 
 ## 🖥 Controls
 
-| Action                                | Remote / Keyboard |
-|---------------------------------------|-------------------|
-| Next artwork                          | →                 |
-| Previous artwork                      | ←                 |
-| Toggle artwork info                   | ↑ (short press)   |
-| Toggle fullscreen                     | ↑ (hold 3 sec)    |
-| Hide info                             | ↓                 |
-| Change passepartout color             | Green / Space     |
-| Increase slideshow time               | Yellow / D        |
-| Decrease slideshow time               | Blue / A          |
-| Change passepartout style             | OK / Enter        |
-| Open/close menu                       | Red / M           |
-| Reload with new random order          | - / N             |
+| Action                                | Remote / Keyboard    |
+|---------------------------------------|----------------------|
+| Next artwork                          | →                    |
+| Previous artwork                      | ←                    |
+| Toggle artwork info                   | ↑                    |
+| Hide info                             | ↓                    |
+| Change passepartout color             | PLAY / Green / Space |
+| Increase slideshow time               | Chan_UP / Yellow / D |
+| Decrease slideshow time               | Chan_DOWN / Blue / A |
+| Change passepartout style             | OK / Enter           |
+| Open/close menu                       | BACK / Red / M       |
+| Reload with new random order          | - / N                |
 
 ---
 
@@ -46,7 +45,7 @@ TizenBrew is a community application for Samsung TVs running TizenOS that allows
 
 0. Enable **Developer Mode** on your TV and install [TizenBrew](https://github.com/reisxd/TizenBrew).
 1. Launch **TizenBrew**.
-2. Add Developer Module with `@dchwilk/artgallerytb`.
+2. Add GitHub-Modul `@dchwilk/artgallerytb`.
 3. Launch **ArtGalleryTB** from TizenBrew.
 
 ---
