@@ -1170,6 +1170,18 @@
         if (code === TV_KEYS.RETURN || key === 'Escape' || key.toLowerCase() === 'm') {
           closeMenu();
         }
+		
+      if (code === TV_KEYS.OK) {
+        const focused = document.activeElement;
+        if (focused && focused.type === 'checkbox') {
+          focused.checked = !focused.checked;
+          focused.dispatchEvent(new Event('change'));
+        } else if (focused && focused.tagName === 'BUTTON') {
+          focused.click();
+        }
+        e.preventDefault();
+        e.stopPropagation();
+        }
         return;
       }
     
@@ -1252,5 +1264,3 @@
   </script>
 </body>
 </html>
-	
-	
