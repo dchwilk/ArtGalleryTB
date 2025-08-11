@@ -1,5 +1,5 @@
 {
-  "name": "@dwilk/artgallerytb",
+  "name": "@dchwilk/artgallerytb",
   "appName": "ArtGalleryTB",
   "packageType": "app",
   "version": "0.0.1",
@@ -18,7 +18,8 @@
     "MediaTrackPrevious"
   ],
   "repository": {
-    "url": "https://github.com/dwilk/artgallerytb"
+    "url": "https://github.com/dchwilk/artgallerytb"
   },
   "license": "GPL-3.0-only"
+
 }
