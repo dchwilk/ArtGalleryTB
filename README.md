@@ -46,7 +46,7 @@ TizenBrew is a community application for Samsung TVs running TizenOS that allows
 
 0. Enable **Developer Mode** on your TV and install [TizenBrew](https://github.com/reisxd/TizenBrew).
 1. Launch **TizenBrew**.
-2. Add Developer Module with `@dwilk/artgallerytb`.
+2. Add Developer Module with `@dchwilk/artgallerytb`.
 3. Launch **ArtGalleryTB** from TizenBrew.
 
 ---
