@@ -411,7 +411,7 @@
         <div class="menu-section" id="types">
           <h3>🎨 Kunstarten</h3>
           <div class="menu-item">
-            <label><input type="checkbox" id="sourcePaintings" checked> Gemälde</label>
+            <label><input type="checkbox" id="sourcePaintings"> Gemälde</label>
           </div>
           <div class="menu-item">
             <label><input type="checkbox" id="sourcePhotographs"> Fotografien</label>
@@ -442,7 +442,7 @@
             <label><input type="checkbox" id="periodBaroque"> Barock (1600-1750)</label>
           </div>
           <div class="menu-item">
-            <label><input type="checkbox" id="periodModern" checked> Modern (1750-1950)</label>
+            <label><input type="checkbox" id="periodModern"> Modern (1750-1950)</label>
           </div>
           <div class="menu-item">
             <label><input type="checkbox" id="periodContemporary"> Zeitgenössisch (ab 1950)</label>
@@ -452,7 +452,7 @@
         <div class="menu-section" id="departments">
           <h3>🏛️ Abteilungen</h3>
           <div class="menu-item">
-            <label><input type="checkbox" id="deptEuropean" checked> Europäische Kunst</label>
+            <label><input type="checkbox" id="deptEuropean"> Europäische Kunst</label>
           </div>
           <div class="menu-item">
             <label><input type="checkbox" id="deptAmerican"> Amerikanische Kunst</label>
@@ -461,7 +461,7 @@
             <label><input type="checkbox" id="deptAsian"> Asiatische Kunst</label>
           </div>
           <div class="menu-item">
-            <label><input type="checkbox" id="deptModern" checked> Moderne Kunst</label>
+            <label><input type="checkbox" id="deptModern"> Moderne Kunst</label>
           </div>
           <div class="menu-item">
             <label><input type="checkbox" id="deptContemporary"> Zeitgenössische Kunst</label>
@@ -533,7 +533,10 @@
       UP: 38,
       DOWN: 40,
       LEFT: 37,
-      RIGHT: 39
+      RIGHT: 39,
+      CHANNEL_UP: 427,
+      CHANNEL_DOWN: 428,
+      PLAY: 415
     };
 
     if (window.__spatialNavigation__) {
@@ -1157,55 +1160,7 @@
       currentIndex = (currentIndex - 1 + randomizedOrder.length) % randomizedOrder.length;
       showArtwork();
     }
-	    // Verbesserte Menü-Navigation
-    function handleMenuNavigation(e) {
-      if (menu.style.display !== 'flex') return;
-      
-      const activeSection = document.querySelector('.menu-section.active');
-      const focusableElements = activeSection.querySelectorAll('input, button');
-      const tabs = document.querySelectorAll('.menu-tab');
-      const currentTab = Array.from(tabs).findIndex(tab => tab.classList.contains('active'));
-      
-      switch(e.key) {
-        case 'ArrowLeft':
-          e.preventDefault();
-          tabs[currentTab].focus();
-          break;
-        case 'ArrowRight':
-          e.preventDefault();
-          if (focusableElements.length > 0) {
-            focusableElements[0].focus();
-          }
-          break;
-        case 'ArrowUp':
-          e.preventDefault();
-          if (document.activeElement.classList.contains('menu-tab')) {
-            // Navigation zwischen Tabs
-            menuTabIndex = Math.max(0, currentTab - 1);
-            tabs[menuTabIndex].focus();
-          } else {
-            // Navigation innerhalb des aktuellen Menüs
-            const currentIndex = Array.from(focusableElements).indexOf(document.activeElement);
-            const newIndex = Math.max(0, currentIndex - 1);
-            focusableElements[newIndex].focus();
-          }
-          break;
-        case 'ArrowDown':
-          e.preventDefault();
-          if (document.activeElement.classList.contains('menu-tab')) {
-            // Navigation zwischen Tabs
-            menuTabIndex = Math.min(tabs.length - 1, currentTab + 1);
-            tabs[menuTabIndex].focus();
-          } else {
-            // Navigation innerhalb des aktuellen Menüs
-            const currentIndex = Array.from(focusableElements).indexOf(document.activeElement);
-            const newIndex = Math.min(focusableElements.length - 1, currentIndex + 1);
-            focusableElements[newIndex].focus();
-          }
-          break;
-      }
-    }
-
+	
     document.addEventListener('keydown', (e) => {
       const code = e.keyCode || e.which;
       const key = e.key;
@@ -1234,24 +1189,28 @@
           infoHoldStart = 0;
           break;
         case TV_KEYS.GREEN:
+		case TV_KEYS.PLAY:
         case 71: // g
         case 32: // Space
           colorIndex = (colorIndex + 1) % matColors.length;
           setPassepartout(colorIndex);
           break;
         case TV_KEYS.YELLOW:
+		case TV_KEYS.CHANNEL_UP:
         case 89: // y
         case 68: // d
           timer += 15;
           startSlideshow();
           break;
         case TV_KEYS.BLUE:
+		case TV_KEYS.CHANNEL_DOWN:
         case 66: // b
         case 65: // a
           timer = Math.max(5, timer - 15);
           startSlideshow();
           break;
         case TV_KEYS.RED:
+		case TV_KEYS.RETURN:
         case 77: // m
         case 82: // r
           toggleMenu();
