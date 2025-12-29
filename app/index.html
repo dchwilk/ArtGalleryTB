@@ -3,11 +3,6 @@
 <head>
   <meta charset="UTF-8">
   <title>Kunst Diashow - Multi-Museum</title>
-  <script src="spatial-navigation-polyfill.js"></script>  
-  <script src="script.js"></script>
-  <script src="navi.js"></script>
-  <script src="apis.js"></script>
-  <script src="passepartout.js"></script>
   <link rel="stylesheet" type="text/css" href="styles.css">
 </head>
 <body>
@@ -162,6 +157,11 @@
     </div>
   </div>
 
+   <script src="spatial-navigation-polyfill.js"></script>
+  <script src="passepartout.js"></script> <!-- definiert colorIndex, styleIndex, setPassepartout, updatePassepartoutStyle -->
+  <script src="script.js"></script>       <!-- nutzt img, infoBox etc. und loadAllArtworks, nextArtwork, ... -->
+  <script src="apis.js"></script>         <!-- liefert loadAICData, loadMETData, ... für script.js -->
+  <script src="navi.js"></script>         <!-- nutzt menu, infoBox, colorIndex, setPassepartout, loadAllArtworks, ... -->
   <script>
     const img = document.getElementById('art');
     const infoBox = document.getElementById('infoBox');
@@ -170,13 +170,11 @@
     const loadingInfo = document.getElementById('loadingInfo');
     const frame = document.getElementById('frame');
 
-    // Bildlade-Fehlerbehandlung
     img.onerror = function() {
       console.log('Bild konnte nicht geladen werden, überspringe...');
       nextArtwork();
     };
-	
-    // Initialisierung
+
     setPassepartout(colorIndex);
     updatePassepartoutStyle();
     initMenuNavigation();
