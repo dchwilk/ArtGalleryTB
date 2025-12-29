@@ -163,18 +163,23 @@
   <script src="apis.js"></script>         <!-- liefert loadAICData, loadMETData, ... für script.js -->
   <script src="navi.js"></script>         <!-- nutzt menu, infoBox, colorIndex, setPassepartout, loadAllArtworks, ... -->
   <script>
-    const img = document.getElementById('art');
-    const infoBox = document.getElementById('infoBox');
-    const menu = document.getElementById('menuOverlay');
-    const passepartout = document.getElementById('passepartout');
-    const loadingInfo = document.getElementById('loadingInfo');
-    const frame = document.getElementById('frame');
 
+  <script>
+    // Globale Variablen – NICHT const, damit Tizen sie als global erkennt
+    var img = document.getElementById('art');
+    var infoBox = document.getElementById('infoBox');
+    var menu = document.getElementById('menuOverlay');
+    var passepartout = document.getElementById('passepartout');
+    var loadingInfo = document.getElementById('loadingInfo');
+    var frame = document.getElementById('frame');
+
+    // Bildlade-Fehlerbehandlung
     img.onerror = function() {
       console.log('Bild konnte nicht geladen werden, überspringe...');
       nextArtwork();
     };
 
+    // Initialisierung
     setPassepartout(colorIndex);
     updatePassepartoutStyle();
     initMenuNavigation();
