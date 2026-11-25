@@ -4,13 +4,13 @@
     let colorIndex = 0;
     let styleIndex = 0;
     let styles = ['klassisch', 'modern', 'smart', 'crop', 'cropMax', 'none'];
-    
+
 
 
 	function updatePassepartoutStyle() {
       passepartout.style.display = 'flex';
       passepartout.className = 'passepartout';
-      
+
       if (styles[styleIndex] === 'modern') {
         passepartout.classList.add('modern');
       } else if (styles[styleIndex] === 'crop') {
@@ -19,18 +19,17 @@
         passepartout.classList.add('cropMax');
       } else if (styles[styleIndex] === 'none') {
         passepartout.classList.add('none');
-      } else {	    
+      } else {
         passepartout.classList.add('contain');
       }
 
       document.getElementById('styleLabel').textContent = styles[styleIndex];
     }
-	
+
 	function setPassepartout(index) {
       const color = matColors[index];
       passepartout.style.background = color;
       document.body.style.background = color;
+      frame.style.background = color;
       document.getElementById('colorLabel').textContent = colorNames[index];
     }
-	
-	

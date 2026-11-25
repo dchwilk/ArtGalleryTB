@@ -10,7 +10,8 @@ function saveSettings() {
   settingsCheckboxes().forEach(input => { checkboxes[input.id] = input.checked; });
   try {
     localStorage.setItem(SETTINGS_KEY, JSON.stringify({
-      version: 1, timer, matColor: matColors[colorIndex], frameStyle: styles[styleIndex], checkboxes
+      version: 1, timer, matColor: matColors[colorIndex], frameStyle: styles[styleIndex], checkboxes,
+      brightness: Number(document.getElementById('brightnessSlider').value)
     }));
   } catch (error) { console.log('Einstellungen konnten nicht gespeichert werden:', error); }
 }
@@ -24,6 +25,9 @@ function restoreSettings() {
     const style = styles.indexOf(saved.frameStyle);
     if (color >= 0) colorIndex = color;
     if (style >= 0) styleIndex = style;
+    if (Number.isInteger(saved.brightness) && saved.brightness >= 20 && saved.brightness <= 100) {
+      document.getElementById('brightnessSlider').value = saved.brightness;
+    }
     if (saved.checkboxes && typeof saved.checkboxes === 'object') {
       settingsCheckboxes().forEach(input => {
         if (typeof saved.checkboxes[input.id] === 'boolean') input.checked = saved.checkboxes[input.id];
@@ -35,5 +39,16 @@ function restoreSettings() {
 function initSettings() {
   restoreSettings();
   document.getElementById('timeLabel').textContent = timer;
-  menu.addEventListener('change', saveSettings);
+  applyBrightness();
+  menu.addEventListener('change', () => { applyBrightness(); saveSettings(); });
+  document.getElementById('brightnessSlider').addEventListener('input', () => { applyBrightness(); saveSettings(); });
+}
+
+function applyBrightness() {
+  const enabled = document.getElementById('brightnessEnabled').checked;
+  const slider = document.getElementById('brightnessSlider');
+  slider.disabled = !enabled;
+  const value = enabled ? Number(slider.value) : 100;
+  document.getElementById('brightnessLabel').textContent = value + ' %';
+  frame.style.filter = value === 100 ? 'none' : 'brightness(' + value / 100 + ')';
 }

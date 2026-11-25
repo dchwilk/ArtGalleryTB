@@ -45,18 +45,49 @@ function navigateTabs(step) {
   focusCurrentTab();
 }
 
+function navigateContent(action) {
+  const focused = document.activeElement;
+  const rect = focused.getBoundingClientRect();
+  const x = rect.left + rect.width / 2;
+  const y = rect.top + rect.height / 2;
+  const horizontal = action === 'left' || action === 'right';
+  const candidates = Array.from(menuItems()).filter(element => element !== focused).map(element => {
+    const box = element.getBoundingClientRect();
+    return { element, box, dx: box.left + box.width / 2 - x, dy: box.top + box.height / 2 - y };
+  }).filter(item => {
+    if (horizontal) return item.box.top < rect.bottom && item.box.bottom > rect.top
+      && (action === 'left' ? item.dx < -2 : item.dx > 2);
+    return action === 'up' ? item.dy < -2 : item.dy > 2;
+  });
+  candidates.sort((a, b) => horizontal ? Math.abs(a.dx) - Math.abs(b.dx)
+    : (Math.abs(a.dy) * 10 + Math.abs(a.dx)) - (Math.abs(b.dy) * 10 + Math.abs(b.dx)));
+  if (candidates.length) candidates[0].element.focus();
+  else if (action === 'left' || (isSmallLayout() && action === 'up')) focusCurrentTab();
+}
+
 function handleMenuNavigation(action) {
   if (action === 'menu') { closeMenu(); return; }
   const focused = document.activeElement;
   const onTab = focused && focused.classList.contains('menu-tab');
   const horizontal = isSmallLayout();
+  if (focused?.type === 'range' && (action === 'left' || action === 'right')) {
+    if (action === 'left') focused.stepDown();
+    else focused.stepUp();
+    focused.dispatchEvent(new Event('input', { bubbles: true }));
+    return;
+  }
   if (action === 'ok') {
     // Tabs are buttons too: handle them before ordinary button activation.
     if (onTab) {
       switchTab(focused.dataset.tab);
       focusCurrentMenuItem();
+    } else if (focused?.type === 'checkbox' && !focused.disabled) {
+      // Tizen engines do not consistently activate checkboxes through click().
+      focused.checked = !focused.checked;
+      focused.dispatchEvent(new Event('input', { bubbles: true }));
+      focused.dispatchEvent(new Event('change', { bubbles: true }));
     } else if (focused && menu.contains(focused) && typeof focused.click === 'function') {
-      focused.click(); // Native checkbox activation emits input/change exactly once.
+      focused.click();
     }
   } else if (onTab) {
     if (horizontal && (action === 'left' || action === 'right')) {
@@ -66,11 +97,8 @@ function handleMenuNavigation(action) {
     } else if ((horizontal && action === 'down') || (!horizontal && action === 'right')) {
       focusCurrentMenuItem();
     }
-  } else if (action === 'left' || (horizontal && action === 'up' && menuItemIndex === 0)) {
-    focusCurrentTab();
-  } else if (action === 'up' || action === 'down') {
-    menuItemIndex += action === 'up' ? -1 : 1;
-    focusCurrentMenuItem();
+  } else if (['left', 'right', 'up', 'down'].indexOf(action) >= 0) {
+    navigateContent(action);
   }
 }
 

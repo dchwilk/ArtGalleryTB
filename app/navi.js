@@ -67,6 +67,11 @@ function handleAllNavigation(event) {
 }
 
 function handleNavigationRelease(event) {
+  if (remoteAction(event) === 'ok') {
+    event.preventDefault();
+    event.stopPropagation();
+    return;
+  }
   if (remoteAction(event) !== 'up' || infoHoldStart === null) return;
   event.preventDefault();
   event.stopPropagation();

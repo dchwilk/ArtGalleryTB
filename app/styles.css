@@ -5,6 +5,7 @@
       font-family: sans-serif;
     }
     #frame {
+      width: 100vw;
       display: flex;
       align-items: center;
       justify-content: center;
@@ -292,6 +293,11 @@
     .source-indicator.met { background: #ffc107; }
     .source-indicator.rijks { background: #ff5722; }
     .source-indicator.cleveland { background: #3f51b5; }
+    .source-indicator.smk { background: #c96f73; }
+    .source-indicator.getty { background: #80a8cc; }
+    .brightness-control { margin-top: 0.8em; gap: 0.7em; flex-wrap: wrap; }
+    #brightnessSlider { width: 280px; max-width: 70vw; cursor: pointer; }
+    #brightnessSlider:focus { outline: 3px solid white; outline-offset: 6px; }
     
     button.save {
       padding: 1em 2em;

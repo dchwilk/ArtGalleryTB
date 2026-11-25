@@ -25,7 +25,7 @@
         <button class="menu-tab active" data-tab="sources">🏛️ Museen</button>
         <button class="menu-tab" data-tab="types">🎨 Kunstarten</button>
         <button class="menu-tab" data-tab="periods">📅 Epochen</button>
-        <button class="menu-tab" data-tab="departments">🏛️ Abteilungen</button>
+        <button class="menu-tab" data-tab="departments">🌍 Bereiche</button>
         <button class="menu-tab" data-tab="properties">⚙️ Eigenschaften</button>
         <button class="menu-tab" data-tab="settings">🔧 Einstellungen</button>
       </div>
@@ -51,22 +51,28 @@
             <label>
               <span class="source-indicator cleveland"></span>
               <input type="checkbox" id="sourceCleveland" > 
-              Cleveland Museum of Art (Need API-Key)
+              Cleveland Museum of Art
             </label>
           </div>
           <div class="menu-item">
             <label>
               <span class="source-indicator rijks"></span>
               <input type="checkbox" id="sourceRijks"> 
-              Rijksmuseum Amsterdam (Need API-Key)
+              Rijksmuseum Amsterdam (bisherige Schnittstelle)
             </label>
+          </div>
+          <div class="menu-item">
+            <label><span class="source-indicator smk"></span><input type="checkbox" id="sourceSMK" checked> SMK – Statens Museum for Kunst</label>
+          </div>
+          <div class="menu-item">
+            <label><span class="source-indicator getty"></span><input type="checkbox" id="sourceGetty"> J. Paul Getty Museum</label>
           </div>
         </div>
         
         <div class="menu-section" id="types">
           <h3>🎨 Kunstarten</h3>
           <div class="menu-item">
-            <label><input type="checkbox" id="sourcePaintings"> Gemälde</label>
+            <label><input type="checkbox" id="sourcePaintings" checked> Gemälde</label>
           </div>
           <div class="menu-item">
             <label><input type="checkbox" id="sourcePhotographs"> Fotografien</label>
@@ -105,7 +111,7 @@
         </div>
         
         <div class="menu-section" id="departments">
-          <h3>🏛️ Abteilungen</h3>
+          <h3>🌍 Regionen & Zeitbereiche</h3>
           <div class="menu-item">
             <label><input type="checkbox" id="deptEuropean"> Europäische Kunst</label>
           </div>
@@ -126,18 +132,29 @@
         <div class="menu-section" id="properties">
           <h3>⚙️ Eigenschaften</h3>
           <div class="menu-item">
-            <label><input type="checkbox" id="onlyPublicDomain"> Nur gemeinfrei</label>
+            <label><input type="checkbox" id="onlyPublicDomain" checked> Nur gemeinfrei</label>
           </div>
           <div class="menu-item">
             <label><input type="checkbox" id="onlyHighRes"> Nur hochauflösende Bilder</label>
           </div>
           <div class="menu-item">
-            <label><input type="checkbox" id="onlyWithImages"> Nur mit Bildern</label>
+            <label><input type="checkbox" id="onlyWithImages" checked> Nur mit Bildern</label>
+          </div>
+          <div class="menu-item">
+            <label><input type="checkbox" id="onlyLandscape"> Nur Querformat (breiter als hoch)</label>
           </div>
         </div>
         
         <div class="menu-section" id="settings">
           <h3>🔧 Einstellungen</h3>
+          <div class="menu-item">
+            <label><input type="checkbox" id="brightnessEnabled"> Helligkeit von Bild und Passepartout anpassen</label>
+            <label class="brightness-control" for="brightnessSlider">
+              Helligkeit: <span id="brightnessLabel">100 %</span>
+              <input id="brightnessSlider" type="range" min="20" max="100" step="5" value="100" disabled>
+            </label>
+            <small>Links / Rechts zum Anpassen. Dimmt die Darstellung, nicht die TV-Hintergrundbeleuchtung.</small>
+          </div>
           <div class="menu-item">
             <label>Diashow-Zeit: <span id="timeLabel">30</span> Sekunden</label>
           </div>
@@ -149,9 +166,10 @@
           </div>
           <div class="menu-item">
             <label>Geladene Werke: <span id="artworkCount">0</span></label>
+            <small id="collectionStatus" role="status" aria-live="polite"></small>
           </div>
           
-          <div style="margin-top: 2em;">
+          <div class="menu-actions" style="margin-top: 2em;">
             <button class="save" onclick="applyFiltersAndReload()">🔄 Filter anwenden & neu laden</button>
             <button class="save" onclick="closeMenu()">✅ Speichern & zurück</button>
           </div>
@@ -165,6 +183,8 @@
   <script src="passepartout.js"></script>
   <script src="settings.js"></script>
   <script src="loading.js"></script>
+  <script src="filters.js"></script>
+  <script src="random.js"></script>
   <script src="apis.js"></script>
   <script src="script.js"></script>
   <script src="menu.js"></script>
