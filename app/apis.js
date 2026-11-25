@@ -5,11 +5,15 @@ async function museumJSON(url, options = {}) {
   const abort = () => controller.abort();
   if (options.signal?.aborted) abort();
   options.signal?.addEventListener('abort', abort);
-  const timeout = setTimeout(abort, 20000);
+  let timedOut = false;
+  const timeout = setTimeout(() => { timedOut = true; abort(); }, options.timeout || 20000);
   try {
     const response = await fetch(url, { signal: controller.signal });
     if (!response.ok) throw new Error('HTTP ' + response.status);
     return await response.json();
+  } catch (error) {
+    if (timedOut && !options.signal?.aborted) throw new Error('Museum request timed out');
+    throw error;
   } finally {
     clearTimeout(timeout);
     options.signal?.removeEventListener('abort', abort);

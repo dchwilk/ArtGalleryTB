@@ -60,12 +60,12 @@ function cancelImageLoad() {
   pendingImage = null;
 }
 
-function resetImageLoading() {
+function resetImageLoading(clearFailures = true) {
   cancelImageLoad();
   clearTimeout(preloadTimer);
   if (preloaded) preloaded.job.cancel();
   preloaded = null;
-  failedImages = new Set();
+  if (clearFailures) failedImages = new Set();
 }
 
 function imageMatchesRequirements(image, work) {

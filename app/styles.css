@@ -272,6 +272,7 @@
       cursor: pointer;
       display: flex;
       align-items: center;
+      gap: 0.35em;
       font-size: 1em;
     }
     
@@ -295,6 +296,23 @@
     .source-indicator.cleveland { background: #3f51b5; }
     .source-indicator.smk { background: #c96f73; }
     .source-indicator.getty { background: #80a8cc; }
+    .source-indicator.karlsruhe { background: #df9f50; }
+    .source-indicator.museumdigital { background: #67b6a1; }
+    .control-buttons { display: flex; flex-wrap: wrap; gap: 0.7em; margin-top: 0.7em; }
+    .menu-item button {
+      font: inherit; padding: 0.7em 1em; margin-top: 0.5em;
+      color: white; background: #37474f; border: 1px solid #78909c;
+      border-radius: 6px; cursor: pointer;
+    }
+    .menu-item button:focus { background: #546e7a; }
+    .menu-content button, .menu-content input, .menu-content [tabindex] { scroll-margin: 12px; }
+    .remote-legend { border-top: 1px solid #78909c; margin-top: 1.4em; padding: 1em 0; line-height: 1.5; }
+    .remote-legend h4 { margin: 0; font-size: 1.2em; }
+    .legend-row { display: grid; grid-template-columns: minmax(180px, 1fr) 2fr; gap: 0.7em 1.2em; padding: 0.5em 0; }
+    .remote-legend [tabindex]:focus { outline: 3px solid white; outline-offset: 3px; }
+    .remote-legend dt { font-weight: bold; }
+    .remote-legend dd { margin: 0; }
+    #shuffleStatus { display: block; margin-top: 0.7em; }
     .brightness-control { margin-top: 0.8em; gap: 0.7em; flex-wrap: wrap; }
     #brightnessSlider { width: 280px; max-width: 70vw; cursor: pointer; }
     #brightnessSlider:focus { outline: 3px solid white; outline-offset: 6px; }

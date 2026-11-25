@@ -55,7 +55,8 @@ async function loadAllArtworks() {
   const seen = new Set();
   const sources = getSelectedSources();
   const loaders = { aic: loadAICData, met: loadMETData, cleveland: loadClevelandData,
-    rijks: loadRijksData, smk: loadSMKData, getty: loadGettyData };
+    rijks: loadRijksData, smk: loadSMKData, getty: loadGettyData,
+    karlsruhe: loadKarlsruheData, museumdigital: loadMuseumDigitalData };
 
   function ingest(batch, source) {
     if (requestId !== collectionRequestId) return;
@@ -118,7 +119,13 @@ function showArtwork(direction = 1) {
   loadArtworkImage(work, index, direction, () => renderArtworkInfo(work));
 }
 
-    function renderArtworkInfo(artwork) {
+    function renderArtworkInfo(raw) {
+      // Museum metadata is text, including titles containing angle brackets.
+      const artwork = {};
+      Object.keys(raw).forEach(key => {
+        artwork[key] = typeof raw[key] === 'string' ? raw[key].replace(/[&<>"']/g,
+          character => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' })[character]) : raw[key];
+      });
       // Source-spezifische Tags
       const sourceTag = '<span class="tag ' + artwork.source + '">' + (SOURCE_LABELS[artwork.source] || artwork.source) + '</span>';
 
@@ -149,7 +156,7 @@ function showArtwork(direction = 1) {
           </div>
           
           <div class="source-section">
-            <small>Quelle: ${SOURCE_LABELS[artwork.source] || artwork.source}</small>
+            <small>Quelle: ${artwork.museumName || SOURCE_LABELS[artwork.source] || artwork.source}</small>
             ${artwork.id ? `<small>ID: ${artwork.id}</small>` : ''}
           </div>
         </div>

@@ -67,6 +67,13 @@
           <div class="menu-item">
             <label><span class="source-indicator getty"></span><input type="checkbox" id="sourceGetty"> J. Paul Getty Museum</label>
           </div>
+          <div class="menu-item">
+            <label><span class="source-indicator karlsruhe"></span><input type="checkbox" id="sourceKarlsruhe"> Staatliche Kunsthalle Karlsruhe</label>
+          </div>
+          <div class="menu-item">
+            <label><span class="source-indicator museumdigital"></span><input type="checkbox" id="sourceMuseumDigital"> museum-digital – deutsche Museen</label>
+            <small>Gemeinfreie Hauptabbildungen aus verschiedenen deutschen Sammlungen.</small>
+          </div>
         </div>
         
         <div class="menu-section" id="types">
@@ -157,12 +164,30 @@
           </div>
           <div class="menu-item">
             <label>Diashow-Zeit: <span id="timeLabel">30</span> Sekunden</label>
+            <div class="control-buttons">
+              <button id="slowerButton" onclick="changeSlideTime(15)">Langsamer (+15 s)</button>
+              <button id="fasterButton" onclick="changeSlideTime(-15)">Schneller (−15 s)</button>
+            </div>
           </div>
           <div class="menu-item">
             <label>Passepartout-Farbe: <span id="colorLabel">Eierschale</span></label>
+            <button id="matColorButton" onclick="changeMatColor()">Andere Passepartout-Farbe</button>
           </div>
           <div class="menu-item">
             <label>Passepartout-Stil: <span id="styleLabel">Klassisch</span></label>
+            <button id="frameStyleButton" onclick="changeFrameStyle()">Anderer Rahmen</button>
+          </div>
+          <div class="menu-item">
+            <div class="control-buttons">
+              <button id="shuffleButton" onclick="reshuffleArtworks()">Neu mischen</button>
+              <button id="infoButton" onclick="toggleInfo()">Bildinformationen ein / aus</button>
+              <button id="fullscreenButton" onclick="toggleGalleryFullscreen()">Vollbild ein / aus</button>
+            </div>
+            <div class="control-buttons">
+              <button id="previousButton" onclick="previousArtwork()">Vorheriges Bild</button>
+              <button id="nextButton" onclick="nextArtwork()">Nächstes Bild</button>
+            </div>
+            <small id="shuffleStatus" role="status" aria-live="polite"></small>
           </div>
           <div class="menu-item">
             <label>Geladene Werke: <span id="artworkCount">0</span></label>
@@ -173,6 +198,21 @@
             <button class="save" onclick="applyFiltersAndReload()">🔄 Filter anwenden & neu laden</button>
             <button class="save" onclick="closeMenu()">✅ Speichern & zurück</button>
           </div>
+          <section class="remote-legend" aria-labelledby="remoteLegendTitle">
+            <h4 id="remoteLegendTitle">Tastenbelegung</h4>
+            <p>Während der Diashow:</p>
+            <dl>
+              <div class="legend-row" tabindex="0"><dt>Links / Rechts</dt><dd>Vorheriges / nächstes Bild</dd></div>
+              <div class="legend-row" tabindex="0"><dt>Hoch / Runter</dt><dd>Bildinformationen ein / ausblenden</dd></div>
+              <div class="legend-row" tabindex="0"><dt>OK / Enter</dt><dd>Anderer Rahmen</dd></div>
+              <div class="legend-row" tabindex="0"><dt>Grün / Play / Play-Pause</dt><dd>Andere Passepartout-Farbe</dd></div>
+              <div class="legend-row" tabindex="0"><dt>Gelb / P+ · Blau / P−</dt><dd>Anzeigezeit länger · kürzer (je 15 Sekunden)</dd></div>
+              <div class="legend-row" tabindex="0"><dt>Zurück / Rot</dt><dd>Menü öffnen / schließen</dd></div>
+              <div class="legend-row" tabindex="0"><dt>Hoch länger als 3 Sekunden</dt><dd>Vollbild ein / aus, wenn unterstützt</dd></div>
+            </dl>
+            <p tabindex="0">Tastatur: M / Esc = Menü · G / Leertaste = Farbe · D / A = Anzeigezeit länger / kürzer · N = neu mischen.</p>
+            <p tabindex="0">Im Menü: Pfeiltasten bewegen den Fokus, OK aktiviert das markierte Feld. Beim Helligkeitsregler ändern Links / Rechts den Wert; Hoch / Runter verlassen den Regler. Die Aktionen oben funktionieren direkt, ohne die Sammlung neu zu laden.</p>
+          </section>
         </div>
       </div>
     </div>
@@ -186,7 +226,11 @@
   <script src="filters.js"></script>
   <script src="random.js"></script>
   <script src="apis.js"></script>
+  <script src="museums/common.js"></script>
+  <script src="museums/karlsruhe.js"></script>
+  <script src="museums/museumdigital.js"></script>
   <script src="script.js"></script>
+  <script src="actions.js"></script>
   <script src="menu.js"></script>
   <script src="navi.js"></script>
   <script src="app.js"></script>

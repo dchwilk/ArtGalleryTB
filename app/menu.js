@@ -11,7 +11,7 @@ function isSmallLayout() {
 }
 
 function menuItems() {
-  return document.querySelector('.menu-section.active').querySelectorAll('input:not(:disabled), button:not(:disabled), select:not(:disabled)');
+  return document.querySelector('.menu-section.active').querySelectorAll('input:not(:disabled), button:not(:disabled), select:not(:disabled), [tabindex="0"]');
 }
 
 function switchTab(tabName) {
@@ -134,5 +134,6 @@ function initMenuNavigation() {
   menu.addEventListener('focusin', event => {
     const index = Array.from(menuItems()).indexOf(event.target);
     if (index >= 0) menuItemIndex = index;
+    if (index >= 0) event.target.scrollIntoView({ block: 'nearest', inline: 'nearest' });
   });
 }

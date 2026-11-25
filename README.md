@@ -3,7 +3,24 @@
 ArtGalleryTB is a TizenBrew app inspired by Samsung's The Frame art mode. It
 displays artworks from public museum collections, with adjustable frames and mats.
 
-## Version 0.3.0
+## Version 0.4.0
+
+- Add Staatliche Kunsthalle Karlsruhe and the German museum-digital catalogue,
+  both optional and without account, key or third-party proxy.
+- Check the main image's rights independently of metadata rights. These two
+  sources use only CC0 / Public Domain images, even if the general rights filter
+  is disabled. Versos, previews and external HTML catalogue pages are excluded.
+- A first metadata batch is followed by bounded random pages from the catalogue.
+  A later request failure keeps already loaded works and reports the source.
+- museum-digital keeps the same overall share as each selected source; contributing
+  museums are additionally interleaved within its artwork queue.
+- Settings now offers faster/slower playback, mat color, frame style, reshuffle,
+  previous/next image, artwork information and optional fullscreen as buttons.
+  These use the same actions as the remote and do not reload the catalogue.
+- A German remote/keyboard legend can be read row by row using the D-pad.
+  Focus scrolls into view on both TV layouts.
+
+## Features retained from 0.3.0
 
 - Samsung remote OK explicitly toggles checkboxes, including on engines where a
   programmatic click does not activate them. Both keydown and keyup defaults are handled.
@@ -35,6 +52,8 @@ displays artworks from public museum collections, with adjustable frames and mat
 | [Art Institute of Chicago](https://api.artic.edu/docs/) | No account/key | Randomized search with small batches and native image dimensions. |
 | [SMK, Copenhagen](https://api.smk.dk/api/v1/docs/) | No account/key | New adapter, translated metadata, open-image filters and highlight-weighted random search. |
 | [J. Paul Getty Museum](https://data.getty.edu/museum/collection/docs/) | No account/key | New adapter. Paintings use the public catalogue query; other selections use a bounded recent-change feed. The image's own rights are checked separately from metadata rights. |
+| [Staatliche Kunsthalle Karlsruhe](https://www.kunsthalle-karlsruhe.de/alle-werke/) | No account/key | Public BSZ catalogue and IIIF images; main-image Public Domain/CC0 rights and pixel dimensions. Catalogue analysis found 2,413 freely marked painting main images, including 1,142 landscape images with width ≥1920px, on 25 November 2026. |
+| [museum-digital Germany](https://nat.museum-digital.de/swagger/) | No account/key | Public batch API; each selected type is queried separately and only CC0 / Public Domain Mark main images with full-size image URLs are accepted. Some external resources point at HTML pages and are intentionally omitted. Availability and image resolution vary by museum. |
 | [Cleveland Museum of Art](https://openaccess-api.clevelandart.org/) | No account/key | Correct skip-based pagination; CC0 status is taken from the museum's record. |
 | [Metropolitan Museum of Art](https://metmuseum.github.io/) | No account/key | Randomized object selection, two detail requests at a time; no third-party CORS proxies. |
 | [Rijksmuseum](https://data.rijksmuseum.nl/docs/) | Legacy adapter retained | The previous adapter remains for compatibility and is not selected by default. Migration to the new keyless Linked Art service is separate. |
@@ -50,6 +69,13 @@ Settings. Browser CORS policies can restrict particular APIs; no proxy is used
 to bypass them. Tests against localhost on 25 November 2026 successfully loaded
 SMK artworks and Getty painting metadata/media; Chicago and Cleveland requests
 were blocked by missing CORS headers in that test environment.
+
+For 0.4.0, 98 automated browser checks pass at 1920×1080 and 1280×720.
+Karlsruhe was also loaded through the real app with a displayed artwork and
+background metadata batches. museum-digital was checked against genuine API
+records captured during research and simulated availability/abort scenarios;
+the final live service check timed out. Its current end-to-end availability
+therefore remains unverified, and it is optional rather than a first-run default.
 
 ## Filters
 
@@ -79,6 +105,12 @@ New image sizes are checked before display if orientation/quality was unknown.
 | Change frame style | OK / Enter |
 | Open / close menu | Back, Red, M, Escape |
 | Generate a new shuffled order | N |
+
+All slideshow actions are also available as buttons in Settings, including
+reshuffle on remotes without letter keys. Faster subtracts 15 seconds and slower
+adds 15 seconds. The existing remote mapping stays the same: Yellow / Channel Up
+adds display time, Blue / Channel Down subtracts it. The in-app legend describes
+the display time explicitly to avoid confusing time and speed.
 
 For horizontal tabs (up to 1280px), Left/Right selects a tab and Down or OK
 enters its content. For vertical tabs, Up/Down selects a tab and Right or OK
@@ -126,11 +158,14 @@ Classic scripts are loaded after the markup, in this order; do not add `async`:
 4. `loading.js`: bounded image loads, preload and status indicator.
 5. `filters.js`: normalization and shared filtering.
 6. `random.js`: shuffled museum/artwork queues.
-7. `apis.js`: progressive museum adapters.
-8. `script.js`: collection state, ingestion, metadata and slideshow.
-9. `menu.js`: menu state and layout-aware focus.
-10. `navi.js`: remote/keyboard mapping and one input handler.
-11. `app.js`: startup after every dependency has loaded.
+7. `apis.js`: shared request helpers and existing museum adapters.
+8. `museums/common.js`, `museums/karlsruhe.js`, `museums/museumdigital.js`:
+   bounded paged loading and the new museum adapters.
+9. `script.js`: collection state, ingestion, escaped metadata and slideshow.
+10. `actions.js`: shared slideshow actions used by the menu and remote.
+11. `menu.js`: menu state, layout-aware focus and scrolling.
+12. `navi.js`: remote/keyboard mapping and one input handler.
+13. `app.js`: startup after every dependency has loaded.
 
 ## Tests
 

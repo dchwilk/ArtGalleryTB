@@ -56,7 +56,7 @@ test('apply filters reloads via the existing museum loader', async ({ page }, te
   const step = testInfo.project.name === 'tv-720p' ? 39 : 40;
   for (let i = 0; i < 5; i++) await remote(page, step);
   await remote(page, 13);
-  await remote(page, 40);
+  await page.getByRole('button', { name: /Filter anwenden/ }).focus();
   await remote(page, 13);
   await expect(page.locator('#menuOverlay')).toBeHidden();
   await expect(page.locator('#frame')).toBeVisible();
@@ -109,6 +109,9 @@ test('every tab and the save buttons are reachable using only the D-pad', async 
   await remote(page, 13);
   await expect(page.locator('#brightnessEnabled')).toBeFocused();
   await remote(page, 40);
+  await expect(page.locator('#slowerButton')).toBeFocused();
+  const apply = page.getByRole('button', { name: /Filter anwenden/ });
+  for (let i = 0; i < 16 && !(await apply.evaluate(e => e === document.activeElement)); i++) await remote(page, 40);
   await expect(page.getByRole('button', { name: /Filter anwenden/ })).toBeFocused();
   await remote(page, 39);
   await expect(page.getByRole('button', { name: /Speichern/ })).toBeFocused();
@@ -195,7 +198,7 @@ test('side-by-side actions use Left/Right and Up returns to the preceding row', 
   await expect(apply).toBeFocused();
   await remote(page, 39);
   await remote(page, 38);
-  await expect(page.locator('#brightnessEnabled')).toBeFocused();
+  await expect(page.locator('#nextButton')).toBeFocused();
 });
 
 test('red opens and closes the menu', async ({ page }) => {

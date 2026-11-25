@@ -2,7 +2,8 @@
 const SOURCE_LABELS = {
   aic: 'Art Institute of Chicago', met: 'Metropolitan Museum',
   cleveland: 'Cleveland Museum of Art', rijks: 'Rijksmuseum',
-  smk: 'SMK – Statens Museum for Kunst', getty: 'J. Paul Getty Museum'
+  smk: 'SMK – Statens Museum for Kunst', getty: 'J. Paul Getty Museum',
+  karlsruhe: 'Staatliche Kunsthalle Karlsruhe', museumdigital: 'museum-digital'
 };
 const TYPE_INPUTS = {
   sourcePaintings: 'painting', sourcePhotographs: 'photograph', sourceSculpture: 'sculpture',
@@ -39,12 +40,12 @@ function normalizeArtwork(raw) {
     types: categoryKeys(type, {
       painting: /paint|maleri|gemälde|schilderij/,
       photograph: /photograph|fotograf|photography/,
-      sculpture: /sculpt|skulpt|beeldhouw/,
-      drawing: /draw|print|tekening|tegning|grafik|graphic|prent|woodcut|træsnit|etching|engraving/,
+      sculpture: /sculpt|skulpt|plastik|beeldhouw/,
+      drawing: /draw|print|zeichnung|stich|radierung|schnitt|tekening|tegning|grafik|graphic|prent|woodcut|træsnit|etching|engraving/,
       decorative: /decorative|furniture|ceramic|vessel|textile|kunsthandwerk|porcelain|møbel|lamp|coin|drachm|jewel|bowl/
     }),
     regions: categoryKeys(region, {
-      european: /europ|netherlands|dutch|danish|denmark|dansk|italian|italiensk|french|france|fransk|german|british|english|spanish|belgian|norwegian|swedish/,
+      european: /europ|deutsch|frankreich|italien|niederl|netherlands|dutch|danish|denmark|dansk|italian|italiensk|french|france|fransk|german|british|english|spanish|belgian|norwegian|swedish/,
       american: /america|united states/,
       asian: /asia|chinese|japanese|korean|himalaya|china|japan/
     })
@@ -54,7 +55,7 @@ function normalizeArtwork(raw) {
 
 function getSelectedSources() {
   return Object.keys(SOURCE_LABELS).filter(source => {
-    const ids = { aic: 'sourceAIC', met: 'sourceMET', cleveland: 'sourceCleveland', rijks: 'sourceRijks', smk: 'sourceSMK', getty: 'sourceGetty' };
+    const ids = { aic: 'sourceAIC', met: 'sourceMET', cleveland: 'sourceCleveland', rijks: 'sourceRijks', smk: 'sourceSMK', getty: 'sourceGetty', karlsruhe: 'sourceKarlsruhe', museumdigital: 'sourceMuseumDigital' };
     return document.getElementById(ids[source]).checked;
   });
 }

@@ -50,19 +50,15 @@ function handleAllNavigation(event) {
       infoHoldStart = null;
       break;
     case 'color':
-      colorIndex = (colorIndex + 1) % matColors.length;
-      setPassepartout(colorIndex);
-      saveSettings();
+      changeMatColor();
       break;
-    case 'faster': timer = Math.min(86400, timer + 15); startSlideshow(); saveSettings(); break;
-    case 'slower': timer = Math.max(5, timer - 15); startSlideshow(); saveSettings(); break;
+    case 'faster': changeSlideTime(15); break;
+    case 'slower': changeSlideTime(-15); break;
     case 'menu': infoHoldStart = null; toggleMenu(); break;
     case 'ok':
-      styleIndex = (styleIndex + 1) % styles.length;
-      updatePassepartoutStyle();
-      saveSettings();
+      changeFrameStyle();
       break;
-    case 'shuffle': createRandomizedOrder(); showArtwork(); break;
+    case 'shuffle': reshuffleArtworks(); break;
   }
 }
 
@@ -81,15 +77,7 @@ function handleNavigationRelease(event) {
   if (held <= 3000) {
     toggleInfo();
   } else {
-    // Fullscreen is optional on TV engines; failures must not break remote input.
-    const target = document.fullscreenElement ? document : document.documentElement;
-    const method = document.fullscreenElement ? 'exitFullscreen' : 'requestFullscreen';
-    if (typeof target[method] === 'function') {
-      try {
-        const result = target[method]();
-        if (result && result.catch) result.catch(error => console.log('Fullscreen unavailable:', error));
-      } catch (error) { console.log('Fullscreen unavailable:', error); }
-    }
+    toggleGalleryFullscreen();
   }
 }
 

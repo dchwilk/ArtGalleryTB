@@ -7,6 +7,25 @@ function shuffleArray(array) {
   return shuffled;
 }
 
+// Within the shared museum-digital source, alternate the contributing museums
+// while each still has unseen works. This does not increase the source's share.
+function shuffleMuseumQueue(indices) {
+  if (!indices.some(index => artworks[index].museumId != null)) return shuffleArray(indices);
+  const museums = {};
+  indices.forEach(index => {
+    const museum = artworks[index].museumId ?? 'unknown';
+    (museums[museum] || (museums[museum] = [])).push(index);
+  });
+  Object.keys(museums).forEach(key => { museums[key] = shuffleArray(museums[key]); });
+  const queue = [];
+  let active = Object.keys(museums);
+  while (active.length) {
+    shuffleArray(active).forEach(key => queue.push(museums[key].pop()));
+    active = active.filter(key => museums[key].length);
+  }
+  return queue;
+}
+
 // Equal museum share, independent of collection size. Refill each museum's
 // shuffled queue only after all its eligible works have been used.
 function buildRandomizedOrder(exclude = -1) {
@@ -18,7 +37,7 @@ function buildRandomizedOrder(exclude = -1) {
   const sources = Object.keys(groups);
   if (!sources.length) return [];
   if (sources.length === 1) {
-    const order = shuffleArray(groups[sources[0]]);
+    const order = shuffleMuseumQueue(groups[sources[0]]);
     if (order.length > 1 && order[0] === exclude) [order[0], order[1]] = [order[1], order[0]];
     return order;
   }
@@ -38,7 +57,7 @@ function buildRandomizedOrder(exclude = -1) {
   const last = {};
   const order = slots.map(source => {
     if (!queues[source]?.length) {
-      queues[source] = shuffleArray(groups[source]);
+      queues[source] = shuffleMuseumQueue(groups[source]);
       const avoid = last[source] ?? exclude;
       if (queues[source].length > 1 && queues[source][queues[source].length-1] === avoid) {
         [queues[source][0], queues[source][queues[source].length-1]] = [queues[source][queues[source].length-1], queues[source][0]];
