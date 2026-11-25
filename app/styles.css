@@ -180,6 +180,7 @@
     }
     
     #menuOverlay {
+      z-index: 20;
       position: absolute;
       top: 0;
       left: 0;
@@ -310,13 +311,40 @@
     }
     
     #loadingInfo {
-      position: absolute;
+      position: fixed;
       top: 50%;
       left: 50%;
       transform: translate(-50%, -50%);
-      color: #666;
-      font-size: 1.5em;
+      z-index: 10;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 1em 1.4em;
+      border-radius: 10px;
+      background: rgba(0,0,0,0.72);
+      color: #fff;
+      font-size: 1.1em;
       text-align: center;
+      pointer-events: none;
+    }
+    .loading-spinner {
+      display: none;
+      margin-bottom: 0.7em;
+      width: 32px;
+      height: 32px;
+      border: 3px solid rgba(255,255,255,0.25);
+      border-top-color: #fff;
+      border-radius: 50%;
+      animation: loading-spin 0.9s linear infinite;
+    }
+    .is-loading .loading-spinner {
+      display: block;
+    }
+    @keyframes loading-spin {
+      to { transform: rotate(360deg); }
+    }
+    @media (prefers-reduced-motion: reduce) {
+      .loading-spinner { animation: none; }
     }
     
     /* TV-optimierte Navigation */

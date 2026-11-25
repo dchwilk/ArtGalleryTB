@@ -3,10 +3,25 @@ let artworks = [];
     let currentIndex = 0;
     let timer = 30;
     let infoVisible = false;
-    let infoHoldStart = 0;
     let interval;
     let randomizedOrder = [];
+    let isLoadingArtworks = false;
+    let collectionRequestId = 0;
 	
+    // Artwork navigation belongs to the slideshow, regardless of input device.
+    function nextArtwork() {
+      if (!randomizedOrder.length) return;
+      currentIndex++;
+      if (currentIndex >= randomizedOrder.length) createRandomizedOrder();
+      showArtwork(1);
+    }
+
+    function previousArtwork() {
+      if (!randomizedOrder.length) return;
+      currentIndex = (currentIndex - 1 + randomizedOrder.length) % randomizedOrder.length;
+      showArtwork(-1);
+    }
+
 	// Fisher-Yates Shuffle
     function shuffleArray(array) {
       const shuffled = [...array];
@@ -76,19 +91,19 @@ let artworks = [];
       
       // Abteilungen
       if (document.getElementById('deptEuropean').checked) {
-        filters.departments.push('European', 'Painting', 'Sculpture');
+        filters.departments.push('european');
       }
       if (document.getElementById('deptAmerican').checked) {
-        filters.departments.push('American');
+        filters.departments.push('american');
       }
       if (document.getElementById('deptAsian').checked) {
-        filters.departments.push('Asian', 'Arts of Asia');
+        filters.departments.push('asian');
       }
       if (document.getElementById('deptModern').checked) {
-        filters.departments.push('Modern', 'Contemporary');
+        filters.departments.push('modern');
       }
       if (document.getElementById('deptContemporary').checked) {
-        filters.departments.push('Contemporary');
+        filters.departments.push('contemporary');
       }
       
       // Eigenschaften
@@ -105,8 +120,21 @@ let artworks = [];
       return filters;
     }
 	
-	function filterArtworks() {
-      const selectedFilters = getSelectedFilters();
+    function matchesDepartment(artwork, department) {
+      // Match the museum's department, never generic media such as "Painting".
+      // Museums without usable department metadata cannot satisfy this filter.
+      const name = String(artwork.department_title || artwork.department || '').toLowerCase();
+      const patterns = {
+        european: /europ/,
+        american: /america|united states/,
+        asian: /asia|chinese|japanese|korean|himalaya/,
+        modern: /modern/,
+        contemporary: /contemporary/
+      };
+      return Boolean(patterns[department] && patterns[department].test(name));
+    }
+
+	function filterArtworks(selectedFilters = getSelectedFilters()) {
       let filteredWorks = [...allArtworks];
       
       // Filter nach Kunstarten
@@ -134,6 +162,12 @@ let artworks = [];
         });
       }
       
+      if (selectedFilters.departments.length > 0) {
+        filteredWorks = filteredWorks.filter(artwork =>
+          selectedFilters.departments.some(department => matchesDepartment(artwork, department))
+        );
+      }
+
       // Filter nach Eigenschaften
       selectedFilters.properties.forEach(prop => {
         switch(prop) {
@@ -153,6 +187,7 @@ let artworks = [];
       });
       
       artworks = filteredWorks;
+      resetImageLoading();
       createRandomizedOrder();
       document.getElementById('artworkCount').textContent = artworks.length;
     }
@@ -160,70 +195,86 @@ let artworks = [];
 	
 	// Aktualisierte loadAllArtworks Funktion
     async function loadAllArtworks() {
-      loadingInfo.style.display = 'block';
+      const requestId = ++collectionRequestId;
+      isLoadingArtworks = true;
+      clearTimeout(interval);
+      resetImageLoading();
+      showLoading('Lade Daten von Museen...');
       frame.style.display = 'none';
-      
-      allArtworks = [];
       const selectedSources = getSelectedSources();
+      const selectedFilters = getSelectedFilters();
+      const collected = [];
       
       try {
-        loadingInfo.textContent = 'Lade Daten von Museen...';
-        
         if (selectedSources.includes('aic')) {
-          loadingInfo.textContent = 'Lade Art Institute of Chicago...';
+          showLoading('Lade Art Institute of Chicago...');
           const aicData = await loadAICData();
-          allArtworks.push(...aicData);
+          if (requestId !== collectionRequestId) return;
+          collected.push(...aicData);
         }
         
         if (selectedSources.includes('met')) {
-          loadingInfo.textContent = 'Lade Metropolitan Museum...';
+          showLoading('Lade Metropolitan Museum...');
           const metData = await loadMETData();
-          allArtworks.push(...metData);
+          if (requestId !== collectionRequestId) return;
+          collected.push(...metData);
         }
         
         if (selectedSources.includes('rijks')) {
-          loadingInfo.textContent = 'Lade Rijksmuseum...';
+          showLoading('Lade Rijksmuseum...');
           const rijksData = await loadRijksData();
-          allArtworks.push(...rijksData);
+          if (requestId !== collectionRequestId) return;
+          collected.push(...rijksData);
         }
         
-        if (selectedSources.includes('cleveland') && document.getElementById('sourceCleveland').checked) {
-          loadingInfo.textContent = 'Lade Cleveland Museum...';
+        if (selectedSources.includes('cleveland')) {
+          showLoading('Lade Cleveland Museum...');
           const clevelandData = await loadClevelandData();
-          allArtworks.push(...clevelandData);
+          if (requestId !== collectionRequestId) return;
+          collected.push(...clevelandData);
         }
         
-        console.log(`Insgesamt ${allArtworks.length} Kunstwerke geladen`);
-        
-        filterArtworks();
+        allArtworks = collected;
+        filterArtworks(selectedFilters);
+        isLoadingArtworks = false;
         
         if (artworks.length > 0) {
-          loadingInfo.style.display = 'none';
-          frame.style.display = 'flex';
           showArtwork();
-          startSlideshow();
         } else {
-          loadingInfo.textContent = 'Keine Kunstwerke gefunden. Bitte Filter anpassen.';
+          showLoading('Keine Kunstwerke gefunden. Bitte Filter anpassen.', false);
         }
       } catch (error) {
+        if (requestId !== collectionRequestId) return;
+        isLoadingArtworks = false;
         console.error('Fehler beim Laden der Kunstwerke:', error);
-        loadingInfo.textContent = 'Fehler beim Laden der Kunstwerke. Bitte neu laden.';
+        artworks = [];
+        randomizedOrder = [];
+        document.getElementById('artworkCount').textContent = '0';
+        showLoading('Fehler beim Laden der Kunstwerke. Bitte neu laden.', false);
       }
     }
 	
-	function showArtwork() {
-      if (!artworks.length || !randomizedOrder.length) return;
+    function showArtwork(direction = 1) {
+      if (isLoadingArtworks || !artworks.length || !randomizedOrder.length) return;
+      let attempts = 0;
+      while (attempts < randomizedOrder.length && failedImages.has(randomizedOrder[currentIndex])) {
+        currentIndex = (currentIndex + direction + randomizedOrder.length) % randomizedOrder.length;
+        attempts++;
+      }
+      if (attempts === randomizedOrder.length) {
+        clearTimeout(interval);
+        cancelImageLoad();
+        showLoading('Keine Bilder konnten geladen werden. Bitte neu laden oder Filter anpassen.', false);
+        return;
+      }
       
       const randomIndex = randomizedOrder[currentIndex % randomizedOrder.length];
       const artwork = artworks[randomIndex];
       
-      // Bild je nach Quelle laden
-      img.src = artwork.imageUrl || 
-                (artwork.source === 'aic' ? `https://www.artic.edu/iiif/2/${artwork.image_id}/full/1024,/0/default.jpg` : 
-                 artwork.source === 'met' ? artwork.primaryImage : 
-                 artwork.source === 'rijks' ? artwork.webImage?.url.replace('=s0', '=s1000') : 
-                 artwork.source === 'cleveland' ? artwork.imageUrl : '');
-      
+      loadArtworkImage(artwork, randomIndex, direction, () => renderArtworkInfo(artwork));
+    }
+
+    function renderArtworkInfo(artwork) {
       // Source-spezifische Tags
       const sourceTag = artwork.source === 'aic' ? '<span class="tag aic">Art Institute Chicago</span>' :
                        artwork.source === 'met' ? '<span class="tag met">Metropolitan Museum</span>' :
@@ -268,16 +319,9 @@ let artworks = [];
     }
 	
 	function startSlideshow() {
-      clearInterval(interval);
-      interval = setInterval(() => {
-        currentIndex++;
-        
-        if (currentIndex >= randomizedOrder.length) {
-          createRandomizedOrder();
-        }
-        
-        showArtwork();
-      }, timer * 1000);
+      clearTimeout(interval);
       document.getElementById('timeLabel').textContent = timer;
+      if (isLoadingArtworks || pendingImage || !artworks.length || failedImages.size >= artworks.length) return;
+      // Each successfully loaded image gets its full display duration.
+      interval = setTimeout(nextArtwork, timer * 1000);
     }
-	

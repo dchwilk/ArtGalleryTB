@@ -6,7 +6,10 @@
   <link rel="stylesheet" type="text/css" href="styles.css">
 </head>
 <body>
-  <div id="loadingInfo">Lade Kunstwerke...</div>
+  <div id="loadingInfo" class="is-loading" role="status" aria-live="polite">
+    <span class="loading-spinner" aria-hidden="true"></span>
+    <span id="loadingText">Lade Kunstwerke...</span>
+  </div>
   <div id="frame" style="display: none;">
     <div class="passepartout" id="passepartout">
       <div class="inner-frame">
@@ -157,31 +160,15 @@
     </div>
   </div>
 
-   <script src="spatial-navigation-polyfill.js"></script>
-  <script src="passepartout.js"></script> <!-- definiert colorIndex, styleIndex, setPassepartout, updatePassepartoutStyle -->
-  <script src="script.js"></script>       <!-- nutzt img, infoBox etc. und loadAllArtworks, nextArtwork, ... -->
-  <script src="apis.js"></script>         <!-- liefert loadAICData, loadMETData, ... für script.js -->
-  <script src="navi.js"></script>         <!-- nutzt menu, infoBox, colorIndex, setPassepartout, loadAllArtworks, ... -->
-  <script>
-    // Globale Variablen – NICHT const, damit Tizen sie als global erkennt
-    var img = document.getElementById('art');
-    var infoBox = document.getElementById('infoBox');
-    var menu = document.getElementById('menuOverlay');
-    var passepartout = document.getElementById('passepartout');
-    var loadingInfo = document.getElementById('loadingInfo');
-    var frame = document.getElementById('frame');
-
-    // Bildlade-Fehlerbehandlung
-    img.onerror = function() {
-      console.log('Bild konnte nicht geladen werden, überspringe...');
-      nextArtwork();
-    };
-
-    // Initialisierung
-    setPassepartout(colorIndex);
-    updatePassepartoutStyle();
-    initMenuNavigation();
-    loadAllArtworks();
-  </script>
+  <!-- Classic scripts run in order. Start only after every feature is loaded. -->
+  <script src="dom.js"></script>
+  <script src="passepartout.js"></script>
+  <script src="settings.js"></script>
+  <script src="loading.js"></script>
+  <script src="apis.js"></script>
+  <script src="script.js"></script>
+  <script src="menu.js"></script>
+  <script src="navi.js"></script>
+  <script src="app.js"></script>
 </body>
 </html>

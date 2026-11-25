@@ -2,12 +2,16 @@
   "name": "@dchwilk/artgallerytb",
   "appName": "ArtGalleryTB",
   "packageType": "app",
-  "version": "0.1.1",
+  "version": "0.2.0",
   "author": "Ygreck",
   "description": "ArtGalleryTB is a Tizen module inspired by Samsungs The Frame art mode — but instead of showing paid Samsung Art Store content, it displays artworks from free, public museum APIs.",
   "appPath": "app/index.html",
   "serviceFile": "dist/service.js",
   "keys": [
+    "ColorF0Red",
+    "ColorF1Green",
+    "ColorF2Yellow",
+    "ColorF3Blue",
     "MediaPlayPause",
     "MediaPlay",
     "MediaPause",
@@ -16,13 +20,17 @@
     "MediaRewind",
     "MediaTrackNext",
     "MediaTrackPrevious",
-	"ChannelUp",
-	"ChannelDown"	
+    "ChannelUp",
+    "ChannelDown"
   ],
   "repository": {
     "url": "https://github.com/dchwilk/artgallerytb"
   },
-  "license": "GPL-3.0-only"
-
+  "license": "GPL-3.0-only",
+  "scripts": {
+    "test": "playwright test"
+  },
+  "devDependencies": {
+    "@playwright/test": "^1.65.1"
+  }
 }
-
