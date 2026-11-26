@@ -56,7 +56,7 @@ test('apply filters reloads via the existing museum loader', async ({ page }, te
   const step = testInfo.project.name === 'tv-720p' ? 39 : 40;
   for (let i = 0; i < 5; i++) await remote(page, step);
   await remote(page, 13);
-  await page.getByRole('button', { name: /Filter anwenden/ }).focus();
+  await page.getByRole('button', { name: /Neue Auswahl laden/ }).focus();
   await remote(page, 13);
   await expect(page.locator('#menuOverlay')).toBeHidden();
   await expect(page.locator('#frame')).toBeVisible();
@@ -86,7 +86,7 @@ test('long Up tolerates unsupported fullscreen and focus loss', async ({ page })
 test('arrows return from content to the selected tab in either layout', async ({ page }, testInfo) => {
   await remote(page, 10009);
   await remote(page, testInfo.project.name === 'tv-720p' ? 40 : 39);
-  await expect(page.locator('#sourceAIC')).toBeFocused();
+  await expect(page.locator('[data-checkbox-id="sourceAIC"]')).toBeFocused();
   await remote(page, testInfo.project.name === 'tv-720p' ? 38 : 37);
   await expect(page.locator('[data-tab="sources"]')).toBeFocused();
 });
@@ -107,14 +107,14 @@ test('every tab and the save buttons are reachable using only the D-pad', async 
     await expect(page.locator('#' + tab)).toBeVisible();
   }
   await remote(page, 13);
-  await expect(page.locator('#brightnessEnabled')).toBeFocused();
+  await expect(page.locator('[data-checkbox-id="brightnessEnabled"]')).toBeFocused();
   await remote(page, 40);
   await expect(page.locator('#slowerButton')).toBeFocused();
-  const apply = page.getByRole('button', { name: /Filter anwenden/ });
+  const apply = page.getByRole('button', { name: /Neue Auswahl laden/ });
   for (let i = 0; i < 16 && !(await apply.evaluate(e => e === document.activeElement)); i++) await remote(page, 40);
-  await expect(page.getByRole('button', { name: /Filter anwenden/ })).toBeFocused();
-  await remote(page, 39);
-  await expect(page.getByRole('button', { name: /Speichern/ })).toBeFocused();
+  await expect(page.getByRole('button', { name: /Neue Auswahl laden/ })).toBeFocused();
+  await page.locator('#applySettingsButton').focus();
+  await expect(page.locator('#applySettingsButton')).toBeFocused();
   await remote(page, 13);
   await expect(page.locator('#menuOverlay')).toBeHidden();
   await remote(page, 39);
@@ -170,7 +170,7 @@ test('OK enters the selected tab and toggles a checkbox once', async ({ page }) 
   await remote(page, 10009);
   await expect(page.locator('[data-tab="sources"]')).toBeFocused();
   await remote(page, 13);
-  await expect(page.locator('#sourceAIC')).toBeFocused();
+  await expect(page.locator('[data-checkbox-id="sourceAIC"]')).toBeFocused();
   await remote(page, 13);
   await expect(page.locator('#sourceAIC')).not.toBeChecked();
 });
@@ -187,18 +187,15 @@ test('OK toggles checkboxes even when programmatic click cannot activate them', 
   await expect(page.locator('#sourceAIC')).toBeChecked();
 });
 
-test('side-by-side actions use Left/Right and Up returns to the preceding row', async ({ page }) => {
+test('side-by-side playback controls follow Left/Right', async ({ page }) => {
   await page.evaluate(() => { toggleMenu(); switchTab('settings'); });
-  const apply = page.getByRole('button', { name: /Filter anwenden/ });
-  const save = page.getByRole('button', { name: /Speichern/ });
-  await apply.focus();
+  await page.locator('#slowerButton').focus();
   await remote(page, 39);
-  await expect(save).toBeFocused();
+  await expect(page.locator('#fasterButton')).toBeFocused();
   await remote(page, 37);
-  await expect(apply).toBeFocused();
-  await remote(page, 39);
+  await expect(page.locator('#slowerButton')).toBeFocused();
   await remote(page, 38);
-  await expect(page.locator('#nextButton')).toBeFocused();
+  await expect(page.locator('[data-checkbox-id="brightnessEnabled"]')).toBeFocused();
 });
 
 test('red opens and closes the menu', async ({ page }) => {

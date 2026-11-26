@@ -1,6 +1,14 @@
 // Menu state and focus only; no slideshow or remote key handling here.
 let menuTabIndex = 0;
 let menuItemIndex = 0;
+let menuRemoteActivation = null;
+let menuActivationClickAllowed = false;
+
+function activateMenuControl(control) {
+  menuRemoteActivation = { element: control, time: Date.now() };
+  menuActivationClickAllowed = true;
+  try { control.click(); } finally { menuActivationClickAllowed = false; }
+}
 
 function isMenuOpen() {
   return menu.style.display === 'flex';
@@ -11,7 +19,7 @@ function isSmallLayout() {
 }
 
 function menuItems() {
-  return document.querySelector('.menu-section.active').querySelectorAll('input:not(:disabled), button:not(:disabled), select:not(:disabled), [tabindex="0"]');
+  return [...document.querySelector('.menu-section.active').querySelectorAll('input:not([hidden]):not(:disabled), button:not(:disabled), select:not(:disabled), [tabindex="0"]'), document.getElementById('applySettingsButton')];
 }
 
 function switchTab(tabName) {
@@ -47,11 +55,17 @@ function navigateTabs(step) {
 
 function navigateContent(action) {
   const focused = document.activeElement;
+  const footer = document.getElementById('applySettingsButton');
+  const content = menuItems().filter(element => element !== footer);
+  if (focused === footer && action === 'up') {
+    if (content.length) content[content.length - 1].focus();
+    return;
+  }
   const rect = focused.getBoundingClientRect();
-  const x = rect.left + rect.width / 2;
+  const x = rect.left + (focused.classList.contains('checkbox-control') ? Math.min(20, rect.width / 2) : rect.width / 2);
   const y = rect.top + rect.height / 2;
   const horizontal = action === 'left' || action === 'right';
-  const candidates = Array.from(menuItems()).filter(element => element !== focused).map(element => {
+  let candidates = Array.from(menuItems()).filter(element => element !== focused).map(element => {
     const box = element.getBoundingClientRect();
     return { element, box, dx: box.left + box.width / 2 - x, dy: box.top + box.height / 2 - y };
   }).filter(item => {
@@ -59,6 +73,10 @@ function navigateContent(action) {
       && (action === 'left' ? item.dx < -2 : item.dx > 2);
     return action === 'up' ? item.dy < -2 : item.dy > 2;
   });
+  // The fixed footer must not intercept Down before offscreen content rows.
+  if (!horizontal && candidates.some(item => item.element !== footer)) {
+    candidates = candidates.filter(item => item.element !== footer);
+  }
   candidates.sort((a, b) => horizontal ? Math.abs(a.dx) - Math.abs(b.dx)
     : (Math.abs(a.dy) * 10 + Math.abs(a.dx)) - (Math.abs(b.dy) * 10 + Math.abs(b.dx)));
   if (candidates.length) candidates[0].element.focus();
@@ -87,7 +105,7 @@ function handleMenuNavigation(action) {
       focused.dispatchEvent(new Event('input', { bubbles: true }));
       focused.dispatchEvent(new Event('change', { bubbles: true }));
     } else if (focused && menu.contains(focused) && typeof focused.click === 'function') {
-      focused.click();
+      activateMenuControl(focused);
     }
   } else if (onTab) {
     if (horizontal && (action === 'left' || action === 'right')) {
@@ -110,20 +128,31 @@ function toggleMenu() {
   focusCurrentTab();
 }
 
-function closeMenu() {
+function closeMenu(forceReload = false) {
+  const changed = appliedSelectionKey !== collectionSelectionKey();
   saveSettings();
   infoHoldStart = null;
   if (menu.contains(document.activeElement)) document.activeElement.blur();
   menu.style.display = 'none';
+  if (changed || forceReload) loadAllArtworks();
 }
 
 function applyFiltersAndReload() {
-  saveSettings();
-  loadAllArtworks();
-  closeMenu();
+  closeMenu(true);
 }
 
 function initMenuNavigation() {
+  // Some TV engines deliver a separate activation click after the handled Enter.
+  // Allow our synchronous click once; ignore only the following zero-detail
+  // activation clicks on that same control. Real pointer clicks keep working.
+  menu.addEventListener('click', event => {
+    const control = event.target.closest('button');
+    if (event.detail === 0 && menuRemoteActivation?.element === control
+      && Date.now() - menuRemoteActivation.time < 700 && !menuActivationClickAllowed) {
+      event.preventDefault();
+      event.stopImmediatePropagation();
+    }
+  }, true);
   document.querySelectorAll('.menu-tab').forEach(tab => {
     tab.addEventListener('click', () => switchTab(tab.dataset.tab));
     tab.addEventListener('focus', () => {

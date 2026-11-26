@@ -106,7 +106,7 @@ test('brightness dims image, frame and mat together and supports remote arrows',
   const step = testInfo.project.name === 'tv-720p' ? 'ArrowRight' : 'ArrowDown';
   for (let i = 0; i < 5; i++) await page.keyboard.press(step);
   await page.keyboard.press('Enter');
-  await expect(page.locator('#brightnessEnabled')).toBeFocused();
+  await expect(page.locator('[data-checkbox-id="brightnessEnabled"]')).toBeFocused();
   await page.keyboard.press('Enter');
   await page.keyboard.press('ArrowDown');
   await expect(page.locator('#brightnessSlider')).toBeFocused();
@@ -289,16 +289,16 @@ test('Getty painting selection queries the painting catalogue instead of recent 
   expect(result[0].categories.types).toContain('painting');
 });
 
-test('wrapped action buttons use Up/Down according to their visible layout', async ({ page }) => {
+test('the apply action stays visible while settings scroll', async ({ page }) => {
   await openGallery(page);
-  await page.addStyleTag({content:'.menu-actions { width: 400px; }'});
   await page.evaluate(() => { toggleMenu(); switchTab('settings'); });
-  const apply = page.getByRole('button', {name:/Filter anwenden/});
-  const save = page.getByRole('button', {name:/Speichern/});
-  expect((await save.boundingBox()).y).toBeGreaterThan((await apply.boundingBox()).y);
-  await apply.focus();
+  const last = page.locator('.remote-legend p[tabindex]').last();
+  await last.focus();
   await page.keyboard.press('ArrowDown');
-  await expect(save).toBeFocused();
+  await expect(page.locator('#applySettingsButton')).toBeFocused();
   await page.keyboard.press('ArrowUp');
-  await expect(apply).toBeFocused();
+  await expect(last).toBeFocused();
+  const box = await page.locator('#applySettingsButton').boundingBox();
+  expect(box.y).toBeGreaterThan(0);
+  expect(box.y + box.height).toBeLessThanOrEqual(page.viewportSize().height);
 });

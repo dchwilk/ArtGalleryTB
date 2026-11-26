@@ -38,6 +38,7 @@ function restoreSettings() {
 
 function initSettings() {
   restoreSettings();
+  settingsCheckboxes().forEach(syncCheckboxControl);
   document.getElementById('timeLabel').textContent = timer;
   applyBrightness();
   menu.addEventListener('change', () => { applyBrightness(); saveSettings(); });

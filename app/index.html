@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <title>Kunst Diashow - Multi-Museum</title>
-  <link rel="stylesheet" type="text/css" href="styles.css">
+  <link rel="stylesheet" type="text/css" href="styles.css?v=0-4-1">
 </head>
 <body>
   <div id="loadingInfo" class="is-loading" role="status" aria-live="polite">
@@ -30,6 +30,7 @@
         <button class="menu-tab" data-tab="settings">🔧 Einstellungen</button>
       </div>
       
+      <div class="menu-main">
       <div class="menu-content">
         <div class="menu-section active" id="sources">
           <h3>🏛️ Museen & Sammlungen</h3>
@@ -194,9 +195,8 @@
             <small id="collectionStatus" role="status" aria-live="polite"></small>
           </div>
           
-          <div class="menu-actions" style="margin-top: 2em;">
-            <button class="save" onclick="applyFiltersAndReload()">🔄 Filter anwenden & neu laden</button>
-            <button class="save" onclick="closeMenu()">✅ Speichern & zurück</button>
+          <div class="menu-actions">
+            <button id="reloadCollectionButton" class="save" onclick="applyFiltersAndReload()">Neue Auswahl laden</button>
           </div>
           <section class="remote-legend" aria-labelledby="remoteLegendTitle">
             <h4 id="remoteLegendTitle">Tastenbelegung</h4>
@@ -211,28 +211,34 @@
               <div class="legend-row" tabindex="0"><dt>Hoch länger als 3 Sekunden</dt><dd>Vollbild ein / aus, wenn unterstützt</dd></div>
             </dl>
             <p tabindex="0">Tastatur: M / Esc = Menü · G / Leertaste = Farbe · D / A = Anzeigezeit länger / kürzer · N = neu mischen.</p>
-            <p tabindex="0">Im Menü: Pfeiltasten bewegen den Fokus, OK aktiviert das markierte Feld. Beim Helligkeitsregler ändern Links / Rechts den Wert; Hoch / Runter verlassen den Regler. Die Aktionen oben funktionieren direkt, ohne die Sammlung neu zu laden.</p>
+            <p tabindex="0">Im Menü: Pfeiltasten bewegen den Fokus, OK aktiviert das markierte Feld. Beim Helligkeitsregler ändern Links / Rechts den Wert; Hoch / Runter verlassen den Regler. „Übernehmen & zurück“ wendet die Auswahl an. Auch beim Schließen mit Zurück werden Änderungen übernommen.</p>
           </section>
         </div>
+      </div>
+      <div class="menu-footer">
+        <span id="appVersion">ArtGalleryTB – Version wird geladen</span>
+        <button id="applySettingsButton" class="save" onclick="closeMenu()">Übernehmen & zurück</button>
+      </div>
       </div>
     </div>
   </div>
 
   <!-- Classic scripts run in order. Start only after every feature is loaded. -->
-  <script src="dom.js"></script>
-  <script src="passepartout.js"></script>
-  <script src="settings.js"></script>
-  <script src="loading.js"></script>
-  <script src="filters.js"></script>
-  <script src="random.js"></script>
-  <script src="apis.js"></script>
-  <script src="museums/common.js"></script>
-  <script src="museums/karlsruhe.js"></script>
-  <script src="museums/museumdigital.js"></script>
-  <script src="script.js"></script>
-  <script src="actions.js"></script>
-  <script src="menu.js"></script>
-  <script src="navi.js"></script>
-  <script src="app.js"></script>
+  <script src="dom.js?v=0-4-1"></script>
+  <script src="checkboxes.js?v=0-4-1"></script>
+  <script src="passepartout.js?v=0-4-1"></script>
+  <script src="settings.js?v=0-4-1"></script>
+  <script src="loading.js?v=0-4-1"></script>
+  <script src="filters.js?v=0-4-1"></script>
+  <script src="random.js?v=0-4-1"></script>
+  <script src="apis.js?v=0-4-1"></script>
+  <script src="museums/common.js?v=0-4-1"></script>
+  <script src="museums/karlsruhe.js?v=0-4-1"></script>
+  <script src="museums/museumdigital.js?v=0-4-1"></script>
+  <script src="script.js?v=0-4-1"></script>
+  <script src="actions.js?v=0-4-1"></script>
+  <script src="menu.js?v=0-4-1"></script>
+  <script src="navi.js?v=0-4-1"></script>
+  <script src="app.js?v=0-4-1"></script>
 </body>
 </html>

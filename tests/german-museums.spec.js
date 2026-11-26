@@ -125,7 +125,7 @@ test('menu actions persist settings and shuffle without reloading metadata', asy
 
 test('remote arrows reach and scroll every legend row', async ({ page }) => {
   await page.evaluate(() => { toggleMenu(); switchTab('settings'); });
-  await page.getByRole('button', { name: /Speichern/ }).focus();
+  await page.locator('#reloadCollectionButton').focus();
   for (let i = 0; i < 7; i++) {
     await page.keyboard.press('ArrowDown');
     await expect(page.locator('.legend-row').nth(i)).toBeFocused();

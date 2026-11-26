@@ -73,6 +73,10 @@ function getSelectedFilters() {
   };
 }
 
+function collectionSelectionKey() {
+  return JSON.stringify({ sources: getSelectedSources(), filters: getSelectedFilters() });
+}
+
 function matchesDepartment(raw, department) {
   const work = raw.categories ? raw : normalizeArtwork(raw);
   if (department === 'modern' || department === 'contemporary') {

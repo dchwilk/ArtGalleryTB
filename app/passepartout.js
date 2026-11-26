@@ -3,7 +3,7 @@
     let colorNames = ['Eierschale', 'Sand', 'Stein', 'Anthrazit', 'Hellgrau', 'Weiß', 'Schwarz', 'Blau-Grau', 'Rosa'];
     let colorIndex = 0;
     let styleIndex = 0;
-    let styles = ['klassisch', 'modern', 'smart', 'crop', 'cropMax', 'none'];
+    let styles = ['klassisch', 'modern', 'smart', 'crop', 'cropMax', 'none', 'cropMaxBorderless'];
 
 
 
@@ -17,13 +17,16 @@
         passepartout.classList.add('crop');
       } else if (styles[styleIndex] === 'cropMax') {
         passepartout.classList.add('cropMax');
+      } else if (styles[styleIndex] === 'cropMaxBorderless') {
+        passepartout.classList.add('cropMax', 'borderless');
       } else if (styles[styleIndex] === 'none') {
         passepartout.classList.add('none');
       } else {
         passepartout.classList.add('contain');
       }
 
-      document.getElementById('styleLabel').textContent = styles[styleIndex];
+      document.getElementById('styleLabel').textContent = styles[styleIndex] === 'cropMaxBorderless'
+        ? 'Bildfüllend ohne weißen Rahmen' : styles[styleIndex];
     }
 
 	function setPassepartout(index) {

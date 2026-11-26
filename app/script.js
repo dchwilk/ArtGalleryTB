@@ -12,6 +12,7 @@ let collectionRequestId = 0;
 let collectionAbort;
 let activeFilters = null;
 let sourceFailures = [];
+let appliedSelectionKey = null;
 
 function nextArtwork() {
   if (!randomizedOrder.length || isLoadingArtworks) return;
@@ -34,6 +35,7 @@ function updateCollectionStatus() {
 }
 
 async function loadAllArtworks() {
+  appliedSelectionKey = collectionSelectionKey();
   const requestId = ++collectionRequestId;
   if (collectionAbort) collectionAbort.abort();
   collectionAbort = new AbortController();

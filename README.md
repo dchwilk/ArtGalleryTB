@@ -29,11 +29,19 @@ Choose **Add GitHub Module** for this step. The name field only needs `dchwilk/A
 
 The gallery's menus are currently in German. The steps below include the labels you'll see on screen.
 
+## Updates in TizenBrew
+
+TizenBrew loads GitHub modules through jsDelivr. Updates can take a while to appear because its copies of the files are cached. Restarting the TV does not clear that cache.
+
+To load a specific published release, add the GitHub module with its tag, for example `dchwilk/ArtGalleryTB@v0.4.1`. That release tag must already exist in this repository. An exact commit ID can be used instead of a tag as well.
+
+The gallery version is shown at the bottom of its menu. Close and relaunch TizenBrew after changing the module.
+
 ## Choose artwork and adjust the display
 
 Press **Back** to open the menu. You can select several museums and filter by artwork type, period or region. To show only landscape images, enable **Nur Querformat** under **Eigenschaften**.
 
-Select **Filter anwenden & neu laden** to apply your filters and load a new selection. When several museums are selected, their images are mixed so the same collection doesn't keep coming up.
+Select **Übernehmen & zurück** to apply your filters and return to the slideshow. Pressing Back does the same. This button is available on every tab. When several museums are selected, their images are mixed so the same collection doesn't keep coming up.
 
 Under **Einstellungen**, you can:
 
@@ -45,7 +53,9 @@ Under **Einstellungen**, you can:
 
 You'll also find buttons for artwork information and fullscreen, along with a remote control guide. Fullscreen works where the browser or TV supports it.
 
-**Neu mischen** shuffles the images already loaded. Your settings are saved automatically.
+**Neu mischen** shuffles the images already loaded. **Neue Auswahl laden** loads another selection from the museums. Your settings are saved automatically.
+
+The additional frame style **Bildfüllend ohne weißen Rahmen** fills the screen without the white border. The existing frame styles are still available.
 
 ## Remote controls
 
@@ -84,7 +94,7 @@ The number of matching images depends on the museum and your filters. Some artwo
 
 ## If no images appear
 
-Try another museum or remove a few filters, then select **Filter anwenden & neu laden**. Combining several narrow filters can leave you with no matching images.
+Try another museum or remove a few filters, then select **Übernehmen & zurück**. Combining several narrow filters can leave you with no matching images.
 
 Collections aren't always reachable. Check **Einstellungen**, below the number of loaded artworks, for messages about unavailable sources. Images that fail to load are skipped.
 

@@ -31,7 +31,7 @@ function handleAllNavigation(event) {
   const action = remoteAction(event);
   if (!action) return; // Leave unrelated keys, including volume, to the platform.
   event.preventDefault();
-  event.stopPropagation();
+  event.stopImmediatePropagation();
   if (event.repeat && ['left', 'right', 'up', 'down', 'faster', 'slower'].indexOf(action) === -1) return;
   if (isMenuOpen()) {
     infoHoldStart = null;
@@ -86,6 +86,11 @@ function initNavigation() {
   navigationInitialized = true;
   initMenuNavigation();
   document.addEventListener('keydown', handleAllNavigation, true);
+  document.addEventListener('keypress', event => {
+    if (remoteAction(event) !== 'ok') return;
+    event.preventDefault();
+    event.stopImmediatePropagation();
+  }, true);
   document.addEventListener('keyup', handleNavigationRelease, true);
   window.addEventListener('blur', () => { infoHoldStart = null; });
   document.addEventListener('visibilitychange', () => { infoHoldStart = null; });

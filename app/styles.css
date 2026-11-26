@@ -91,6 +91,18 @@
       border: 6px solid #e0e0e0;
       overflow: hidden;
     }
+    .passepartout.cropMax.borderless {
+      width: 100vw;
+      height: 100vh;
+      background-image: none;
+    }
+    .passepartout.cropMax.borderless .inner-frame {
+      width: 100%;
+      height: 100%;
+      border: 0;
+      box-shadow: none;
+      background: transparent;
+    }
     
     #infoBox {
       position: absolute;
@@ -209,7 +221,12 @@
       flex: 1;
       padding: 2em;
       overflow-y: auto;
+      min-height: 0;
     }
+    .menu-main { display: flex; flex-direction: column; flex: 1; min-width: 0; min-height: 0; }
+    .menu-footer { display: flex; align-items: center; justify-content: space-between; gap: 1em; padding: 0.5em 2em; border-top: 1px solid #555; background: #161616; }
+    .menu-footer button.save { margin: 0; font-size: 1em; padding: 0.8em 1.3em; }
+    #appVersion { font-size: 0.85em; color: #ccc; }
     
     .menu-tab {
       display: block;
@@ -305,6 +322,11 @@
       border-radius: 6px; cursor: pointer;
     }
     .menu-item button:focus { background: #546e7a; }
+    .menu-item .checkbox-control { display: flex; align-items: center; gap: 0.8em; width: 100%; text-align: left; margin: 0; padding: 0.25em; border: 1px solid transparent; background: transparent; }
+    .menu-item .checkbox-control:focus { background: #37474f; }
+    .checkbox-mark { display: inline-block; box-sizing: border-box; position: relative; width: 1.25em; height: 1.25em; flex-shrink: 0; border: 2px solid #ddd; border-radius: 2px; }
+    [aria-checked="true"] .checkbox-mark { background: white; }
+    [aria-checked="true"] .checkbox-mark::after { content: ''; position: absolute; left: 0.25em; top: 0.05em; width: 0.3em; height: 0.65em; border: solid #111; border-width: 0 0.15em 0.15em 0; transform: rotate(45deg); }
     .menu-content button, .menu-content input, .menu-content [tabindex] { scroll-margin: 12px; }
     .remote-legend { border-top: 1px solid #78909c; margin-top: 1.4em; padding: 1em 0; line-height: 1.5; }
     .remote-legend h4 { margin: 0; font-size: 1.2em; }
