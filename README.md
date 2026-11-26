@@ -57,6 +57,21 @@ You'll also find buttons for artwork information and fullscreen, along with a re
 
 The additional frame style **Bildfüllend ohne weißen Rahmen** fills the screen without the white border. The existing frame styles are still available.
 
+## Touch controls
+
+On a phone or a touchscreen such as a Nest Hub, open the gallery page in a browser. The artwork has invisible touch zones; there are no extra buttons over the image.
+
+| Gesture on the artwork | Action |
+|---|---|
+| Swipe left / right | Next / previous image |
+| Tap the left / right quarter | Previous / next image |
+| Tap the middle or swipe down | Open the menu |
+| Tap the bottom quarter or swipe up | Show or hide artwork information |
+
+The bottom zone takes priority over the side zones. In the menu, tap the visible controls and scroll normally. You can also toggle artwork information with its button in Settings.
+
+Switching between portrait and landscape keeps the current image, selections and open menu. If you turn the device during a gesture, that gesture is cancelled. Opening the page on a Nest Hub depends on the device's browser support; this does not add a casting feature.
+
 ## Remote controls
 
 While the slideshow is running:

@@ -128,6 +128,7 @@ function loadArtworkImage(work, index, direction, onReady) {
     candidate.id = img.id;
     candidate.className = img.className;
     candidate.alt = img.alt;
+    candidate.draggable = false;
     img.parentNode.replaceChild(candidate, img);
     img = candidate;
     hasDisplayedArtwork = true;

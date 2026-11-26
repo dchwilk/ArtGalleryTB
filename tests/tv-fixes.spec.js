@@ -123,7 +123,7 @@ test('version display, module entry point and all asset URLs agree',async({page}
 });
 
 test('app boots and OK selects a museum through the TizenBrew module URL and MIME handling',async({page})=>{
-  const prefix='/module/'+encodeURIComponent('gh/dchwilk/ArtGalleryTB@v0.4.1')+'/';
+  const prefix='/module/'+encodeURIComponent('gh/dchwilk/ArtGalleryTB@v'+pkg.version)+'/';
   const root=path.resolve(__dirname,'..');
   const proxy=http.createServer((req,res)=>{
     const relative=req.url.slice(prefix.length);
@@ -140,7 +140,7 @@ test('app boots and OK selects a museum through the TizenBrew module URL and MIM
     await expect(page.locator('#frame')).toBeVisible();
     await page.keyboard.press('m');await page.keyboard.press('Enter');await remoteOK(page);
     await expect(page.locator('[data-checkbox-id="sourceAIC"]')).toHaveAttribute('aria-checked','false');
-    await expect(page.locator('#appVersion')).toHaveText('ArtGalleryTB 0.4.1');
+    await expect(page.locator('#appVersion')).toHaveText('ArtGalleryTB '+pkg.version);
     expect(errors).toEqual([]);
   } finally {proxy.closeAllConnections();await new Promise(r=>proxy.close(r))}
 });

@@ -4,12 +4,15 @@
       overflow: hidden;
       font-family: sans-serif;
     }
+    body { min-height: 100vh; min-height: 100dvh; }
     #frame {
       width: 100vw;
       display: flex;
       align-items: center;
       justify-content: center;
       height: 100vh;
+      height: 100dvh;
+      touch-action: pinch-zoom;
     }
     img.artwork {
       position: relative;
@@ -94,6 +97,7 @@
     .passepartout.cropMax.borderless {
       width: 100vw;
       height: 100vh;
+      height: 100dvh;
       background-image: none;
     }
     .passepartout.cropMax.borderless .inner-frame {
@@ -115,6 +119,11 @@
       display: none;
       font-size: 1.1em;
       line-height: 1.4;
+      box-sizing: border-box;
+      max-height: 55vh;
+      max-height: 55dvh;
+      overflow-y: auto;
+      touch-action: pan-y pinch-zoom;
     }
     .artwork-info {
       max-width: 800px;
@@ -194,7 +203,7 @@
     
     #menuOverlay {
       z-index: 20;
-      position: absolute;
+      position: fixed;
       top: 0;
       left: 0;
       right: 0;
@@ -207,7 +216,11 @@
     
     .menu-container {
       display: flex;
+      width: 100%;
+      min-width: 0;
+      box-sizing: border-box;
       height: 100vh;
+      height: 100dvh;
     }
     
     .menu-sidebar {
@@ -408,13 +421,42 @@
       }
       .menu-sidebar {
         width: 100%;
+        box-sizing: border-box;
+        flex-shrink: 0;
         height: auto;
         display: flex;
         overflow-x: auto;
         padding: 1em;
       }
       .menu-tab {
+        width: auto;
+        flex: 0 0 auto;
         min-width: 150px;
         margin-right: 0.5em;
       }
+    }
+
+    @media (max-width: 600px) {
+      .menu-sidebar { box-sizing: border-box; padding: 0.5em; flex-shrink: 0; }
+      .menu-tab { width: auto; flex-shrink: 0; min-width: auto; padding: 0.8em; margin-bottom: 0; white-space: nowrap; font-size: 0.95em; }
+      .menu-content { padding: 1em; }
+      .menu-section h3 { font-size: 1.2em; }
+      .menu-item { padding: 0.6em; }
+      .menu-item .checkbox-control { min-height: 44px; }
+      .menu-item button { min-height: 44px; }
+      .control-buttons button { flex-grow: 1; }
+      .menu-footer { padding: 0.65em 0.8em; gap: 0.5em; padding-bottom: max(0.65em, env(safe-area-inset-bottom)); }
+      .menu-footer button.save { font-size: 0.9em; }
+      #appVersion { font-size: 0.75em; }
+      .legend-row { grid-template-columns: 1fr; gap: 0.2em; }
+      #brightnessSlider { width: 100%; max-width: 100%; min-height: 44px; }
+      #infoBox { padding: 1em; font-size: 0.9em; }
+      .source-section { flex-wrap: wrap; gap: 0.5em; }
+    }
+
+    @media (max-height: 500px) and (max-width: 1280px) {
+      .menu-sidebar { box-sizing: border-box; padding: 0.4em; flex-shrink: 0; }
+      .menu-tab { padding: 0.6em 1em; margin-bottom: 0; }
+      .menu-content { padding: 0.8em 1.2em; }
+      .menu-footer { padding: 0.4em 1em; }
     }
