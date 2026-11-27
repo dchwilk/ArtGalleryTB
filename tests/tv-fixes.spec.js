@@ -144,3 +144,39 @@ test('app boots and OK selects a museum through the TizenBrew module URL and MIM
     expect(errors).toEqual([]);
   } finally {proxy.closeAllConnections();await new Promise(r=>proxy.close(r))}
 });
+
+test('Save and Back are reachable in the sidebar with the remote',async({page},testInfo)=>{
+  await page.keyboard.press('m');
+  if(testInfo.project.name==='tv-720p') {
+    await page.keyboard.press('ArrowDown');
+    await expect(page.locator('#applySettingsButton')).toBeFocused();
+    await page.keyboard.press('ArrowRight');
+  }else{
+    for(let i=0;i<6;i++)await page.keyboard.press('ArrowDown');
+    await expect(page.locator('#applySettingsButton')).toBeFocused();
+    await page.keyboard.press('ArrowDown');
+  }
+  await expect(page.locator('#closeSettingsButton')).toBeFocused();
+  expect(await page.locator('#applySettingsButton').evaluate(e=>Boolean(e.closest('.menu-sidebar')))).toBe(true);
+  await remoteOK(page);
+  await expect(page.locator('#menuOverlay')).toBeHidden();
+});
+
+test('Back button applies pending changes and closes the whole settings menu',async({page})=>{
+  const generation=await page.evaluate(()=>{toggleMenu();switchTab('periods');return collectionRequestId});
+  await page.locator('[data-checkbox-id="periodModern"]').focus();await remoteOK(page);
+  await page.locator('#closeSettingsButton').focus();await remoteOK(page);
+  await expect(page.locator('#menuOverlay')).toBeHidden();
+  expect(await page.evaluate(()=>collectionRequestId)).toBe(generation+1);
+  expect(await page.evaluate(()=>JSON.parse(localStorage.getItem(SETTINGS_KEY)).checkboxes.periodModern)).toBe(true);
+});
+
+test('Samsung Back key closes settings from any tab without leaving the gallery',async({page})=>{
+  const url=page.url();
+  for(const tab of ['sources','periods','settings']){
+    await page.evaluate(tab=>{toggleMenu();switchTab(tab);focusCurrentMenuItem()},tab);
+    await page.evaluate(()=>document.activeElement.dispatchEvent(new KeyboardEvent('keydown',{keyCode:10009,which:10009,bubbles:true,cancelable:true})));
+    await expect(page.locator('#menuOverlay')).toBeHidden();
+    expect(page.url()).toBe(url);
+  }
+});

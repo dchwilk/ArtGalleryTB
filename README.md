@@ -35,13 +35,13 @@ TizenBrew loads GitHub modules through jsDelivr. Updates can take a while to app
 
 To load a specific published release, add the GitHub module with its tag, for example `dchwilk/ArtGalleryTB@v0.4.1`. That release tag must already exist in this repository. An exact commit ID can be used instead of a tag as well.
 
-The gallery version is shown at the bottom of its menu. Close and relaunch TizenBrew after changing the module.
+The gallery version is shown in its menu bar. Close and relaunch TizenBrew after changing the module.
 
 ## Choose artwork and adjust the display
 
 Press **Back** to open the menu. You can select several museums and filter by artwork type, period or region. To show only landscape images, enable **Nur Querformat** under **Eigenschaften**.
 
-Select **Übernehmen & zurück** to apply your filters and return to the slideshow. Pressing Back does the same. This button is available on every tab. When several museums are selected, their images are mixed so the same collection doesn't keep coming up.
+Select **Speichern** to apply your filters and return to the slideshow. Pressing Back does the same. Save and Back are in the menu bar, on the left on a TV and at the top on a phone. Both close the settings and apply changes. When several museums are selected, their images are mixed so the same collection doesn't keep coming up.
 
 Under **Einstellungen**, you can:
 
@@ -71,6 +71,8 @@ On a phone or a touchscreen such as a Nest Hub, open the gallery page in a brows
 The bottom zone takes priority over the side zones. In the menu, tap the visible controls and scroll normally. You can also toggle artwork information with its button in Settings.
 
 Switching between portrait and landscape keeps the current image, selections and open menu. If you turn the device during a gesture, that gesture is cancelled. Opening the page on a Nest Hub depends on the device's browser support; this does not add a casting feature.
+
+On phones, artwork information uses larger text in both orientations. Long titles and IDs wrap, and the information panel scrolls when it needs more space. Turning the phone keeps the panel open.
 
 ## Remote controls
 
@@ -109,7 +111,7 @@ The number of matching images depends on the museum and your filters. Some artwo
 
 ## If no images appear
 
-Try another museum or remove a few filters, then select **Übernehmen & zurück**. Combining several narrow filters can leave you with no matching images.
+Try another museum or remove a few filters, then select **Speichern**. Combining several narrow filters can leave you with no matching images.
 
 Collections aren't always reachable. Check **Einstellungen**, below the number of loaded artworks, for messages about unavailable sources. Images that fail to load are skipped.
 

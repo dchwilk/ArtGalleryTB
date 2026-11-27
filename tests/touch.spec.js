@@ -177,3 +177,41 @@ test('holding a finger does not trigger a tap action',async({page})=>{
     await expect(page.locator('#menuOverlay')).toBeHidden();
   }finally{await session.detach()}
 });
+
+test('touch Back button closes settings in portrait and landscape',async({page})=>{
+  for(const size of [{width:390,height:844},{width:844,height:390}]){
+    await page.setViewportSize(size);
+    await page.touchscreen.tap(size.width/2,size.height/2);
+    await expect(page.locator('#menuOverlay')).toBeVisible();
+    await page.locator('[data-tab="settings"]').tap();
+    await page.locator('#closeSettingsButton').tap();
+    await expect(page.locator('#menuOverlay')).toBeHidden();
+  }
+});
+
+test('long artwork information stays readable and scrollable across phone orientations',async({page})=>{
+  const title='A long artwork title with several details about the landscape and the people in the painting';
+  await page.evaluate(title=>{
+    clearTimeout(interval);
+    renderArtworkInfo({id:'very-long-identifier-'.repeat(18),source:'karlsruhe',title,date_display:'um 1880',
+      artist_display:'An artist with a long name and additional attribution',place_of_origin:'A place with a long description',
+      medium_display:'Oil on canvas; '.repeat(12),dimensions:'120 × 180 cm',credit_line:'Collection and photographer credit. '.repeat(20),is_public_domain:true});
+  },title);
+  await page.touchscreen.tap(195,810);
+  for(const size of [{width:390,height:844},{width:844,height:390},{width:932,height:430},{width:430,height:932},{width:390,height:844}]){
+    await page.setViewportSize(size);
+    await expect(page.locator('#infoBox')).toBeVisible();
+    await expect(page.locator('#infoBox strong')).toHaveText(title);
+    const box=await page.locator('#infoBox').boundingBox();
+    expect(box.x).toBeGreaterThanOrEqual(0);expect(box.y).toBeGreaterThanOrEqual(0);
+    expect(box.width).toBe(size.width);expect(box.y+box.height).toBeLessThanOrEqual(size.height+1);
+    const metrics=await page.locator('#infoBox').evaluate(e=>({font:parseFloat(getComputedStyle(e).fontSize),source:parseFloat(getComputedStyle(e.querySelector('small')).fontSize),width:e.clientWidth,scrollWidth:e.scrollWidth,height:e.clientHeight,scrollHeight:e.scrollHeight}));
+    expect(metrics.font).toBeGreaterThanOrEqual(16);expect(metrics.source).toBeGreaterThanOrEqual(14);
+    expect(metrics.scrollWidth).toBeLessThanOrEqual(metrics.width);expect(metrics.scrollHeight).toBeGreaterThan(metrics.height);
+    await page.locator('#infoBox').evaluate(e=>{e.scrollTop=0});
+    await swipe(page,{x:size.width/2,y:size.height-45},{x:size.width/2,y:size.height-Math.min(180,box.height-30)});
+    await expect.poll(()=>page.locator('#infoBox').evaluate(e=>e.scrollTop)).toBeGreaterThan(0);
+    await expect(page.locator('#infoBox')).toBeVisible();
+    expect(await page.evaluate(()=>currentIndex)).toBe(0);
+  }
+});

@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
   <title>Kunst Diashow - Multi-Museum</title>
-  <link rel="stylesheet" type="text/css" href="styles.css?v=0-4-2">
+  <link rel="stylesheet" type="text/css" href="styles.css?v=0-4-3">
 </head>
 <body>
   <div id="loadingInfo" class="is-loading" role="status" aria-live="polite">
@@ -18,17 +18,24 @@
       </div>
     </div>
   </div>
-  <div id="infoBox"></div>
+  <div id="infoBox" role="region" aria-label="Bildinformationen"></div>
   
   <div id="menuOverlay">
     <div class="menu-container">
       <div class="menu-sidebar">
+        <div class="menu-tabs">
         <button class="menu-tab active" data-tab="sources">🏛️ Museen</button>
         <button class="menu-tab" data-tab="types">🎨 Kunstarten</button>
         <button class="menu-tab" data-tab="periods">📅 Epochen</button>
         <button class="menu-tab" data-tab="departments">🌍 Bereiche</button>
         <button class="menu-tab" data-tab="properties">⚙️ Eigenschaften</button>
         <button class="menu-tab" data-tab="settings">🔧 Einstellungen</button>
+        </div>
+        <div class="sidebar-actions">
+          <button id="applySettingsButton" class="save sidebar-action" onclick="closeMenu()" title="Änderungen übernehmen und Einstellungen schließen">Speichern</button>
+          <button id="closeSettingsButton" class="sidebar-action" onclick="closeMenu()">Zurück</button>
+          <span id="appVersion">ArtGalleryTB – Version wird geladen</span>
+        </div>
       </div>
       
       <div class="menu-main">
@@ -212,36 +219,32 @@
               <div class="legend-row" tabindex="0"><dt>Hoch länger als 3 Sekunden</dt><dd>Vollbild ein / aus, wenn unterstützt</dd></div>
             </dl>
             <p tabindex="0">Tastatur: M / Esc = Menü · G / Leertaste = Farbe · D / A = Anzeigezeit länger / kürzer · N = neu mischen.</p>
-            <p tabindex="0">Im Menü: Pfeiltasten bewegen den Fokus, OK aktiviert das markierte Feld. Beim Helligkeitsregler ändern Links / Rechts den Wert; Hoch / Runter verlassen den Regler. „Übernehmen & zurück“ wendet die Auswahl an. Auch beim Schließen mit Zurück werden Änderungen übernommen.</p>
+            <p tabindex="0">Im Menü: Pfeiltasten bewegen den Fokus, OK aktiviert das markierte Feld. Beim Helligkeitsregler ändern Links / Rechts den Wert; Hoch / Runter verlassen den Regler. „Speichern“ und „Zurück“ in der Menüleiste schließen die Einstellungen und übernehmen Änderungen. Die Zurück-Taste der Fernbedienung macht dasselbe.</p>
             <p tabindex="0">Touch auf dem Bild: Links / rechts wischen oder die seitlichen Viertel antippen = Bildwechsel. Mitte antippen oder nach unten wischen = Menü. Unteres Viertel antippen oder nach oben wischen = Bildinfos ein / aus. Im Menü kannst du normal tippen und scrollen.</p>
           </section>
         </div>
-      </div>
-      <div class="menu-footer">
-        <span id="appVersion">ArtGalleryTB – Version wird geladen</span>
-        <button id="applySettingsButton" class="save" onclick="closeMenu()">Übernehmen & zurück</button>
       </div>
       </div>
     </div>
   </div>
 
   <!-- Classic scripts run in order. Start only after every feature is loaded. -->
-  <script src="dom.js?v=0-4-2"></script>
-  <script src="checkboxes.js?v=0-4-2"></script>
-  <script src="passepartout.js?v=0-4-2"></script>
-  <script src="settings.js?v=0-4-2"></script>
-  <script src="loading.js?v=0-4-2"></script>
-  <script src="filters.js?v=0-4-2"></script>
-  <script src="random.js?v=0-4-2"></script>
-  <script src="apis.js?v=0-4-2"></script>
-  <script src="museums/common.js?v=0-4-2"></script>
-  <script src="museums/karlsruhe.js?v=0-4-2"></script>
-  <script src="museums/museumdigital.js?v=0-4-2"></script>
-  <script src="script.js?v=0-4-2"></script>
-  <script src="actions.js?v=0-4-2"></script>
-  <script src="menu.js?v=0-4-2"></script>
-  <script src="navi.js?v=0-4-2"></script>
-  <script src="touch.js?v=0-4-2"></script>
-  <script src="app.js?v=0-4-2"></script>
+  <script src="dom.js?v=0-4-3"></script>
+  <script src="checkboxes.js?v=0-4-3"></script>
+  <script src="passepartout.js?v=0-4-3"></script>
+  <script src="settings.js?v=0-4-3"></script>
+  <script src="loading.js?v=0-4-3"></script>
+  <script src="filters.js?v=0-4-3"></script>
+  <script src="random.js?v=0-4-3"></script>
+  <script src="apis.js?v=0-4-3"></script>
+  <script src="museums/common.js?v=0-4-3"></script>
+  <script src="museums/karlsruhe.js?v=0-4-3"></script>
+  <script src="museums/museumdigital.js?v=0-4-3"></script>
+  <script src="script.js?v=0-4-3"></script>
+  <script src="actions.js?v=0-4-3"></script>
+  <script src="menu.js?v=0-4-3"></script>
+  <script src="navi.js?v=0-4-3"></script>
+  <script src="touch.js?v=0-4-3"></script>
+  <script src="app.js?v=0-4-3"></script>
 </body>
 </html>

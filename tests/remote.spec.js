@@ -86,8 +86,9 @@ test('long Up tolerates unsupported fullscreen and focus loss', async ({ page })
 test('arrows return from content to the selected tab in either layout', async ({ page }, testInfo) => {
   await remote(page, 10009);
   await remote(page, testInfo.project.name === 'tv-720p' ? 40 : 39);
+  if (testInfo.project.name === 'tv-720p') await remote(page, 40);
   await expect(page.locator('[data-checkbox-id="sourceAIC"]')).toBeFocused();
-  await remote(page, testInfo.project.name === 'tv-720p' ? 38 : 37);
+  await remote(page, 37);
   await expect(page.locator('[data-tab="sources"]')).toBeFocused();
 });
 

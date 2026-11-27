@@ -181,7 +181,9 @@ test('slideshow starts the full display time only when the image has loaded', as
   await openGallery(page);
   let pending;
   await page.route('https://images.test/first', route => { pending = route; });
-  await page.clock.install();
+  await page.clock.install({ time: new Date('2026-01-01T00:00:00Z') });
+  // Keep the exact timer boundary independent of time spent evaluating asserts.
+  await page.clock.pauseAt(new Date('2026-01-01T00:00:01Z'));
   await page.evaluate(() => { timer = 5; });
   await setImages(page, ['https://images.test/first', 'https://www.artic.edu/iiif/next']);
   await expect.poll(() => Boolean(pending)).toBe(true);

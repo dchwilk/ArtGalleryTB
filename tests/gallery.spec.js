@@ -297,7 +297,7 @@ test('the apply action stays visible while settings scroll', async ({ page }) =>
   await page.keyboard.press('ArrowDown');
   await expect(page.locator('#applySettingsButton')).toBeFocused();
   await page.keyboard.press('ArrowUp');
-  await expect(last).toBeFocused();
+  await expect(page.locator('[data-tab="settings"]')).toBeFocused();
   const box = await page.locator('#applySettingsButton').boundingBox();
   expect(box.y).toBeGreaterThan(0);
   expect(box.y + box.height).toBeLessThanOrEqual(page.viewportSize().height);

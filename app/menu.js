@@ -19,7 +19,7 @@ function isSmallLayout() {
 }
 
 function menuItems() {
-  return [...document.querySelector('.menu-section.active').querySelectorAll('input:not([hidden]):not(:disabled), button:not(:disabled), select:not(:disabled), [tabindex="0"]'), document.getElementById('applySettingsButton')];
+  return Array.from(document.querySelector('.menu-section.active').querySelectorAll('input:not([hidden]):not(:disabled), button:not(:disabled), select:not(:disabled), [tabindex="0"]'));
 }
 
 function switchTab(tabName) {
@@ -47,20 +47,16 @@ function focusCurrentMenuItem() {
 }
 
 function navigateTabs(step) {
-  const tabs = document.querySelectorAll('.menu-tab');
-  const index = Math.max(0, Math.min(tabs.length - 1, menuTabIndex + step));
-  switchTab(tabs[index].dataset.tab);
-  focusCurrentTab();
+  const items = Array.from(document.querySelectorAll(isSmallLayout() ? '.menu-tab' : '.menu-sidebar button'));
+  const current = items.indexOf(document.activeElement);
+  const index = Math.max(0, Math.min(items.length - 1, (current < 0 ? menuTabIndex : current) + step));
+  const target = items[index];
+  if (target.dataset.tab) switchTab(target.dataset.tab);
+  target.focus();
 }
 
 function navigateContent(action) {
   const focused = document.activeElement;
-  const footer = document.getElementById('applySettingsButton');
-  const content = menuItems().filter(element => element !== footer);
-  if (focused === footer && action === 'up') {
-    if (content.length) content[content.length - 1].focus();
-    return;
-  }
   const rect = focused.getBoundingClientRect();
   const x = rect.left + (focused.classList.contains('checkbox-control') ? Math.min(20, rect.width / 2) : rect.width / 2);
   const y = rect.top + rect.height / 2;
@@ -73,20 +69,18 @@ function navigateContent(action) {
       && (action === 'left' ? item.dx < -2 : item.dx > 2);
     return action === 'up' ? item.dy < -2 : item.dy > 2;
   });
-  // The fixed footer must not intercept Down before offscreen content rows.
-  if (!horizontal && candidates.some(item => item.element !== footer)) {
-    candidates = candidates.filter(item => item.element !== footer);
-  }
   candidates.sort((a, b) => horizontal ? Math.abs(a.dx) - Math.abs(b.dx)
     : (Math.abs(a.dy) * 10 + Math.abs(a.dx)) - (Math.abs(b.dy) * 10 + Math.abs(b.dx)));
   if (candidates.length) candidates[0].element.focus();
-  else if (action === 'left' || (isSmallLayout() && action === 'up')) focusCurrentTab();
+  else if (action === 'left') focusCurrentTab();
+  else if (action === 'down' || (isSmallLayout() && action === 'up')) document.getElementById('applySettingsButton').focus();
 }
 
 function handleMenuNavigation(action) {
   if (action === 'menu') { closeMenu(); return; }
   const focused = document.activeElement;
   const onTab = focused && focused.classList.contains('menu-tab');
+  const onSidebar = focused && focused.closest('.menu-sidebar');
   const horizontal = isSmallLayout();
   if (focused?.type === 'range' && (action === 'left' || action === 'right')) {
     if (action === 'left') focused.stepDown();
@@ -107,12 +101,22 @@ function handleMenuNavigation(action) {
     } else if (focused && menu.contains(focused) && typeof focused.click === 'function') {
       activateMenuControl(focused);
     }
-  } else if (onTab) {
-    if (horizontal && (action === 'left' || action === 'right')) {
+  } else if (onSidebar) {
+    if (horizontal && !onTab) {
+      if (action === 'up') focusCurrentTab();
+      else if (action === 'down') focusCurrentMenuItem();
+      else if (action === 'left' || action === 'right') {
+        const actions = Array.from(document.querySelectorAll('.sidebar-action'));
+        const index = Math.max(0, Math.min(actions.length - 1, actions.indexOf(focused) + (action === 'left' ? -1 : 1)));
+        actions[index].focus();
+      }
+    } else if (horizontal && (action === 'left' || action === 'right')) {
       navigateTabs(action === 'left' ? -1 : 1);
     } else if (!horizontal && (action === 'up' || action === 'down')) {
       navigateTabs(action === 'up' ? -1 : 1);
-    } else if ((horizontal && action === 'down') || (!horizontal && action === 'right')) {
+    } else if (horizontal && action === 'down') {
+      document.getElementById('applySettingsButton').focus();
+    } else if (!horizontal && action === 'right') {
       focusCurrentMenuItem();
     }
   } else if (['left', 'right', 'up', 'down'].indexOf(action) >= 0) {
@@ -163,6 +167,6 @@ function initMenuNavigation() {
   menu.addEventListener('focusin', event => {
     const index = Array.from(menuItems()).indexOf(event.target);
     if (index >= 0) menuItemIndex = index;
-    if (index >= 0) event.target.scrollIntoView({ block: 'nearest', inline: 'nearest' });
+    if (index >= 0 || event.target.closest('.menu-sidebar')) event.target.scrollIntoView({ block: 'nearest', inline: 'nearest' });
   });
 }
