@@ -1,5 +1,5 @@
 // Bootstrap runs last, after DOM references and every feature are available.
-const APP_VERSION = '0.4.3';
+const APP_VERSION = '0.5.0';
 initCheckboxControls();
 initSettings();
 document.getElementById('appVersion').textContent = 'ArtGalleryTB ' + APP_VERSION;

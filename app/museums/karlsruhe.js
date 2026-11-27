@@ -11,7 +11,7 @@ function karlsruheArtwork(work) {
     id, source: 'karlsruhe', title: museumPlainText(work.titel), imageUrl,
     imageWidth: Number(image.width) || null, imageHeight: Number(image.height) || null,
     artist_display: (work.person || []).filter(person => person.typ === 'Künstler').map(person => person.anzeigename).filter(Boolean).join(', '),
-    date_display: work.entstehungszeit, date_start: work.anfang || null,
+    date_display: work.entstehungszeit, date_start: work.anfang || null, date_end: work.ende || null,
     classification_title: work.objektbezeichnung, department_title: work.sammlung,
     medium_display: [...(work.material || []), ...(work.technik || [])].map(term => term.term).join(', '),
     credit_line: 'Staatliche Kunsthalle Karlsruhe · ' + (image.fotograf || '') + ' · CC0',
@@ -20,8 +20,8 @@ function karlsruheArtwork(work) {
 }
 
 async function loadKarlsruheData(onBatch = () => {}, options = {}) {
-  const names = { painting: 'Gemälde', photograph: 'Fotografie', sculpture: 'Plastik', drawing: 'Zeichnung', decorative: 'Kunsthandwerk' };
-  const types = options.filters?.types || [];
+  const names = { painting: 'Gemälde', photograph: 'Fotografie', sculpture: 'Plastik', drawing: 'Zeichnung', print: 'Druckgrafik', decorative: 'Kunsthandwerk' };
+  const types = options.filters?.includeUnknown ? [] : options.filters?.types || [];
   const query = types.length ? types.map(type => 'gattung all "' + names[type] + '"').join(' or ') : '';
   return loadSampledMuseum((offset, rows) => {
     const params = new URLSearchParams({ mim: 'json', len: rows, fst: offset, flt: 'hatbild:ja' });

@@ -58,7 +58,7 @@ async function loadAllArtworks() {
   const sources = getSelectedSources();
   const loaders = { aic: loadAICData, met: loadMETData, cleveland: loadClevelandData,
     rijks: loadRijksData, smk: loadSMKData, getty: loadGettyData,
-    karlsruhe: loadKarlsruheData, museumdigital: loadMuseumDigitalData };
+    karlsruhe: loadKarlsruheData, museumdigital: loadMuseumDigitalData, nga: loadNGAData };
 
   function ingest(batch, source) {
     if (requestId !== collectionRequestId) return;
@@ -96,9 +96,7 @@ async function loadAllArtworks() {
   collectionLoading = false;
   isLoadingArtworks = false;
   updateCollectionStatus();
-  if (!artworks.length) showLoading(sourceFailures.length
-    ? 'Keine passenden Werke geladen. Bitte Museen oder Filter anpassen.'
-    : 'Keine Kunstwerke gefunden. Bitte Filter anpassen.', false);
+  if (!artworks.length) showLoading(emptySelectionMessage(), false);
   else if (!hasDisplayedArtwork && !pendingImage) showArtwork();
 }
 

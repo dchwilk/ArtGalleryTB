@@ -236,10 +236,12 @@ test('a failing source does not discard works from another museum', async ({ pag
   await expect(page.locator('#collectionStatus')).toContainText('SMK');
 });
 
-test('Getty adapter follows activity records and separately licensed media', async ({ page }) => {
+test('Getty adapter searches objects and separately licensed media', async ({ page }) => {
   await openGallery(page);
   await page.route('https://data.getty.edu/**', route => {
     const url = route.request().url();
+    if (url.includes('/sparql?')) return route.fulfill({ json: { results: { bindings: decodeURIComponent(url).includes('COUNT(')
+      ? [{ count: { value: '1' } }] : [{ object: { value: 'https://data.getty.edu/museum/collection/object/test-1' } }] } } });
     if (url.endsWith('/activity-stream')) return route.fulfill({ json: { last:{id:'https://data.getty.edu/museum/collection/activity-stream/page/1'} } });
     if (url.includes('/activity-stream/page/')) return route.fulfill({ json: { orderedItems:[
       {type:'Update', object:{type:'HumanMadeObject',id:'https://data.getty.edu/museum/collection/object/test-1'}},

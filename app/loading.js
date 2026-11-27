@@ -25,7 +25,9 @@ function artworkImageUrl(work) {
     ? `https://www.artic.edu/iiif/2/${work.image_id}/full/1920,/0/default.jpg`
     : work.source === 'met' ? work.primaryImage
       : work.source === 'rijks' ? work.webImage?.url?.replace('=s0', '=s1000') : '');
-  return typeof url === 'string' ? url : '';
+  if (typeof url !== 'string') return '';
+  // Portraits also need 1600 actual pixels on their long edge when quality is enabled.
+  return activeFilters?.properties.includes('highRes') ? url.replace('/full/!1920,1080/', '/full/!1920,1920/') : url;
 }
 
 function requestArtworkImage(work) {
@@ -70,8 +72,9 @@ function resetImageLoading(clearFailures = true) {
 
 function imageMatchesRequirements(image, work) {
   if (activeFilters?.landscape && image.naturalWidth <= image.naturalHeight) return false;
+  if (activeFilters?.screenRatio && !matchesScreenRatio(image.naturalWidth, image.naturalHeight)) return false;
   if (activeFilters?.properties.includes('highRes')) {
-    return work.is_zoomable === true || Math.max(work.imageWidth || 0, work.imageHeight || 0, image.naturalWidth, image.naturalHeight) >= 1600;
+    return Math.max(image.naturalWidth, image.naturalHeight) >= 1600;
   }
   return true;
 }

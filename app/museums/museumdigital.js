@@ -34,11 +34,10 @@ function museumDigitalArtwork(work) {
 }
 
 async function loadMuseumDigitalData(onBatch = () => {}, options = {}) {
-  const names = { painting: 'Gemälde', photograph: 'Fotografie', sculpture: 'Skulptur', drawing: 'Zeichnung', decorative: 'Kunsthandwerk' };
-  const types = options.filters?.types?.length ? options.filters.types : Object.keys(names);
+  const names = { painting: 'Gemälde', photograph: 'Fotografie', sculpture: 'Skulptur', drawing: 'Zeichnung', print: 'Druckgrafik', decorative: 'Kunsthandwerk' };
+  const types = !options.filters?.includeUnknown && options.filters?.types?.length ? options.filters.types : Object.keys(names);
   // Query each selected type separately; do not depend on undocumented OR syntax.
-  const queries = types.map(type => 'type:' + names[type]);
-  if (types.includes('drawing')) queries.push('type:Druckgrafik');
+  const queries = options.filters?.includeUnknown ? ['*'] : types.map(type => 'type:' + names[type]);
   const results = [];
   for (const query of queries) {
     const works = await loadSampledMuseum((offset, rows) =>

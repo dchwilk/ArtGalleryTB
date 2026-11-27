@@ -10,7 +10,7 @@ function saveSettings() {
   settingsCheckboxes().forEach(input => { checkboxes[input.id] = input.checked; });
   try {
     localStorage.setItem(SETTINGS_KEY, JSON.stringify({
-      version: 1, timer, matColor: matColors[colorIndex], frameStyle: styles[styleIndex], checkboxes,
+      version: 1, filterSchema: 2, timer, matColor: matColors[colorIndex], frameStyle: styles[styleIndex], checkboxes,
       brightness: Number(document.getElementById('brightnessSlider').value)
     }));
   } catch (error) { console.log('Einstellungen konnten nicht gespeichert werden:', error); }
@@ -32,6 +32,12 @@ function restoreSettings() {
       settingsCheckboxes().forEach(input => {
         if (typeof saved.checkboxes[input.id] === 'boolean') input.checked = saved.checkboxes[input.id];
       });
+      if (saved.filterSchema !== 2) {
+        // Former combined drawings/prints and duplicate time filters keep their selections.
+        if (saved.checkboxes.sourceDrawings === true) document.getElementById('sourcePrints').checked = true;
+        if (saved.checkboxes.deptModern === true) document.getElementById('periodModern').checked = true;
+        if (saved.checkboxes.deptContemporary === true) document.getElementById('periodContemporary').checked = true;
+      }
     }
   } catch (error) { console.log('Gespeicherte Einstellungen werden ignoriert:', error); }
 }

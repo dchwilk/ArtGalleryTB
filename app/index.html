@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
   <title>Kunst Diashow - Multi-Museum</title>
-  <link rel="stylesheet" type="text/css" href="styles.css?v=0-4-3">
+  <link rel="stylesheet" type="text/css" href="styles.css?v=0-5-0">
 </head>
 <body>
   <div id="loadingInfo" class="is-loading" role="status" aria-live="polite">
@@ -26,8 +26,8 @@
         <div class="menu-tabs">
         <button class="menu-tab active" data-tab="sources">🏛️ Museen</button>
         <button class="menu-tab" data-tab="types">🎨 Kunstarten</button>
-        <button class="menu-tab" data-tab="periods">📅 Epochen</button>
-        <button class="menu-tab" data-tab="departments">🌍 Bereiche</button>
+        <button class="menu-tab" data-tab="periods">📅 Zeitraum</button>
+        <button class="menu-tab" data-tab="departments">🌍 Herkunft</button>
         <button class="menu-tab" data-tab="properties">⚙️ Eigenschaften</button>
         <button class="menu-tab" data-tab="settings">🔧 Einstellungen</button>
         </div>
@@ -67,7 +67,7 @@
             <label>
               <span class="source-indicator rijks"></span>
               <input type="checkbox" id="sourceRijks"> 
-              Rijksmuseum Amsterdam (bisherige Schnittstelle)
+              Rijksmuseum Amsterdam
             </label>
           </div>
           <div class="menu-item">
@@ -78,6 +78,10 @@
           </div>
           <div class="menu-item">
             <label><span class="source-indicator karlsruhe"></span><input type="checkbox" id="sourceKarlsruhe"> Staatliche Kunsthalle Karlsruhe</label>
+          </div>
+          <div class="menu-item">
+            <label><span class="source-indicator nga"></span><input type="checkbox" id="sourceNGA"> National Gallery of Art, Washington</label>
+            <small>Frei nutzbare Hauptabbildungen aus dem Open-Access-Bestand.</small>
           </div>
           <div class="menu-item">
             <label><span class="source-indicator museumdigital"></span><input type="checkbox" id="sourceMuseumDigital"> museum-digital – deutsche Museen</label>
@@ -97,7 +101,10 @@
             <label><input type="checkbox" id="sourceSculpture"> Skulpturen</label>
           </div>
           <div class="menu-item">
-            <label><input type="checkbox" id="sourceDrawings"> Zeichnungen & Drucke</label>
+            <label><input type="checkbox" id="sourceDrawings"> Zeichnungen</label>
+          </div>
+          <div class="menu-item">
+            <label><input type="checkbox" id="sourcePrints"> Druckgrafik</label>
           </div>
           <div class="menu-item">
             <label><input type="checkbox" id="sourceDecorative"> Kunsthandwerk</label>
@@ -105,29 +112,29 @@
         </div>
         
         <div class="menu-section" id="periods">
-          <h3>📅 Epochen</h3>
+          <h3>📅 Zeitraum</h3>
           <div class="menu-item">
-            <label><input type="checkbox" id="periodAncient"> Antike (vor 500)</label>
+            <label><input type="checkbox" id="periodAncient"> Vor 500</label>
           </div>
           <div class="menu-item">
-            <label><input type="checkbox" id="periodMedieval"> Mittelalter (500-1400)</label>
+            <label><input type="checkbox" id="periodMedieval"> 500–1399</label>
           </div>
           <div class="menu-item">
-            <label><input type="checkbox" id="periodRenaissance"> Renaissance (1400-1600)</label>
+            <label><input type="checkbox" id="periodRenaissance"> 1400–1599</label>
           </div>
           <div class="menu-item">
-            <label><input type="checkbox" id="periodBaroque"> Barock (1600-1750)</label>
+            <label><input type="checkbox" id="periodBaroque"> 1600–1749</label>
           </div>
           <div class="menu-item">
-            <label><input type="checkbox" id="periodModern"> Modern (1750-1950)</label>
+            <label><input type="checkbox" id="periodModern"> 1750–1949</label>
           </div>
           <div class="menu-item">
-            <label><input type="checkbox" id="periodContemporary"> Zeitgenössisch (ab 1950)</label>
+            <label><input type="checkbox" id="periodContemporary"> Ab 1950</label>
           </div>
         </div>
         
         <div class="menu-section" id="departments">
-          <h3>🌍 Regionen & Zeitbereiche</h3>
+          <h3>🌍 Herkunft & Kultur</h3>
           <div class="menu-item">
             <label><input type="checkbox" id="deptEuropean"> Europäische Kunst</label>
           </div>
@@ -138,26 +145,35 @@
             <label><input type="checkbox" id="deptAsian"> Asiatische Kunst</label>
           </div>
           <div class="menu-item">
-            <label><input type="checkbox" id="deptModern"> Moderne Kunst</label>
+            <label><input type="checkbox" id="deptAfrican"> Afrikanische Kunst</label>
           </div>
           <div class="menu-item">
-            <label><input type="checkbox" id="deptContemporary"> Zeitgenössische Kunst</label>
+            <label><input type="checkbox" id="deptOceanian"> Ozeanische Kunst</label>
           </div>
         </div>
         
         <div class="menu-section" id="properties">
           <h3>⚙️ Eigenschaften</h3>
+          <p>Mehrere Werte einer Gruppe gelten als ODER. Verschiedene Gruppen gelten gemeinsam. Ohne Auswahl schränkt eine Gruppe nicht ein.</p>
           <div class="menu-item">
             <label><input type="checkbox" id="onlyPublicDomain" checked> Nur gemeinfrei</label>
           </div>
           <div class="menu-item">
-            <label><input type="checkbox" id="onlyHighRes"> Nur hochauflösende Bilder</label>
+            <label><input type="checkbox" id="onlyHighRes"> Mindestens 1600 Pixel an der langen Bildkante</label>
           </div>
           <div class="menu-item">
             <label><input type="checkbox" id="onlyWithImages" checked> Nur mit Bildern</label>
           </div>
           <div class="menu-item">
             <label><input type="checkbox" id="onlyLandscape"> Nur Querformat (breiter als hoch)</label>
+          </div>
+          <div class="menu-item">
+            <label><input type="checkbox" id="nearScreenRatio"> Ungefähr TV-Format (Seitenverhältnis 1,5–2,05)</label>
+            <small>Engere Auswahl als Querformat; das Bild wird durch diesen Filter nicht zugeschnitten.</small>
+          </div>
+          <div class="menu-item">
+            <label><input type="checkbox" id="includeUnknownMetadata"> Werke mit unbekannter Kunstart, Herkunft oder Datierung einschließen</label>
+            <small>Gilt für diese drei Filtergruppen. Bildrechte und Bildqualität werden weiterhin geprüft.</small>
           </div>
         </div>
         
@@ -229,22 +245,29 @@
   </div>
 
   <!-- Classic scripts run in order. Start only after every feature is loaded. -->
-  <script src="dom.js?v=0-4-3"></script>
-  <script src="checkboxes.js?v=0-4-3"></script>
-  <script src="passepartout.js?v=0-4-3"></script>
-  <script src="settings.js?v=0-4-3"></script>
-  <script src="loading.js?v=0-4-3"></script>
-  <script src="filters.js?v=0-4-3"></script>
-  <script src="random.js?v=0-4-3"></script>
-  <script src="apis.js?v=0-4-3"></script>
-  <script src="museums/common.js?v=0-4-3"></script>
-  <script src="museums/karlsruhe.js?v=0-4-3"></script>
-  <script src="museums/museumdigital.js?v=0-4-3"></script>
-  <script src="script.js?v=0-4-3"></script>
-  <script src="actions.js?v=0-4-3"></script>
-  <script src="menu.js?v=0-4-3"></script>
-  <script src="navi.js?v=0-4-3"></script>
-  <script src="touch.js?v=0-4-3"></script>
-  <script src="app.js?v=0-4-3"></script>
+  <script src="dom.js?v=0-5-0"></script>
+  <script src="checkboxes.js?v=0-5-0"></script>
+  <script src="passepartout.js?v=0-5-0"></script>
+  <script src="settings.js?v=0-5-0"></script>
+  <script src="loading.js?v=0-5-0"></script>
+  <script src="filters.js?v=0-5-0"></script>
+  <script src="random.js?v=0-5-0"></script>
+  <script src="apis.js?v=0-5-0"></script>
+  <script src="museums/common.js?v=0-5-0"></script>
+  <script src="museums/aic.js?v=0-5-0"></script>
+  <script src="museums/met.js?v=0-5-0"></script>
+  <script src="museums/cleveland.js?v=0-5-0"></script>
+  <script src="museums/smk.js?v=0-5-0"></script>
+  <script src="museums/getty.js?v=0-5-0"></script>
+  <script src="museums/rijks.js?v=0-5-0"></script>
+  <script src="museums/nga.js?v=0-5-0"></script>
+  <script src="museums/karlsruhe.js?v=0-5-0"></script>
+  <script src="museums/museumdigital.js?v=0-5-0"></script>
+  <script src="script.js?v=0-5-0"></script>
+  <script src="actions.js?v=0-5-0"></script>
+  <script src="menu.js?v=0-5-0"></script>
+  <script src="navi.js?v=0-5-0"></script>
+  <script src="touch.js?v=0-5-0"></script>
+  <script src="app.js?v=0-5-0"></script>
 </body>
 </html>

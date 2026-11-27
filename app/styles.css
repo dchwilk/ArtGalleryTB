@@ -495,3 +495,5 @@
       #infoBox .source-section { flex-wrap: wrap; gap: 0.5rem; }
       #infoBox .source-section small { font-size: inherit; min-width: 0; max-width: 100%; }
     }
+
+.source-indicator.nga, .tag.nga { background: #786648; }

@@ -33,13 +33,17 @@ The gallery's menus are currently in German. The steps below include the labels 
 
 TizenBrew loads GitHub modules through jsDelivr. Updates can take a while to appear because its copies of the files are cached. Restarting the TV does not clear that cache.
 
-To load a specific published release, add the GitHub module with its tag, for example `dchwilk/ArtGalleryTB@v0.4.1`. That release tag must already exist in this repository. An exact commit ID can be used instead of a tag as well.
+To load a specific published release, add the GitHub module with its tag, for example `dchwilk/ArtGalleryTB@v0.5.0`. That release tag must already exist in this repository. An exact commit ID can be used instead of a tag as well.
 
 The gallery version is shown in its menu bar. Close and relaunch TizenBrew after changing the module.
 
 ## Choose artwork and adjust the display
 
-Press **Back** to open the menu. You can select several museums and filter by artwork type, period or region. To show only landscape images, enable **Nur Querformat** under **Eigenschaften**.
+Press **Back** to open the menu. You can select several museums and filter by artwork type, date range or origin. Drawings and prints have separate choices. Several choices within one group are combined; different groups narrow the selection together. An empty group allows everything in that group.
+
+Under **Eigenschaften**, **Nur Querformat** selects images wider than they are tall. **Ungefähr TV-Format** narrows that down to images closer to the shape of a TV, without changing how they are framed. The quality option requires at least 1600 pixels on the long edge of the image actually loaded.
+
+Some works have no known origin, type or date. You can include those with **Werke mit unbekannter Kunstart, Herkunft oder Datierung einschließen**. Otherwise they are left out when the corresponding filter is selected. Image rights are still checked. If no works match, the gallery suggests filters to loosen; it does not change your choices.
 
 Select **Speichern** to apply your filters and return to the slideshow. Pressing Back does the same. Save and Back are in the menu bar, on the left on a TV and at the top on a phone. Both close the settings and apply changes. When several museums are selected, their images are mixed so the same collection doesn't keep coming up.
 
@@ -104,8 +108,10 @@ Available sources:
 - J. Paul Getty Museum
 - Staatliche Kunsthalle Karlsruhe
 - German collections through museum-digital
+- Rijksmuseum, Amsterdam
+- National Gallery of Art, Washington
 
-The Rijksmuseum is also still included through its older connection.
+The Rijksmuseum uses its current service without an API key. The National Gallery of Art uses a bundled catalogue of over 63,000 freely reusable primary images, including over 2,900 paintings. Its images load directly from the museum. The catalogue is a snapshot and is refreshed with app updates.
 
 The number of matching images depends on the museum and your filters. Some artworks have incomplete information. museum-digital can currently be slow or unavailable.
 

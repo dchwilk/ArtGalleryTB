@@ -1,0 +1,200 @@
+{
+  "source": "https://raw.githubusercontent.com/NationalGalleryOfArt/opendata/main/data/",
+  "generated": "2026-11-27T13:38:46.796002+00:00",
+  "imagePolicy": "https://www.nga.gov/artworks/free-images-and-open-access",
+  "selection": "openaccess=1; viewtype=primary; non-virtual objects",
+  "columns": [
+    "id",
+    "title",
+    "artist_display",
+    "date_display",
+    "date_start",
+    "date_end",
+    "classification_title",
+    "medium_display",
+    "dimensions",
+    "credit_line",
+    "imageService",
+    "imageWidth",
+    "imageHeight",
+    "nationality"
+  ],
+  "total": 63861,
+  "shards": [
+    {
+      "file": "decorative-5691cfb0e8c5.json",
+      "type": "decorative",
+      "count": 2000
+    },
+    {
+      "file": "decorative-6cf3f5146eaa.json",
+      "type": "decorative",
+      "count": 2000
+    },
+    {
+      "file": "decorative-801bfc3a73a2.json",
+      "type": "decorative",
+      "count": 2000
+    },
+    {
+      "file": "decorative-483cbb7cbc0a.json",
+      "type": "decorative",
+      "count": 2000
+    },
+    {
+      "file": "decorative-382359f9c6d4.json",
+      "type": "decorative",
+      "count": 2000
+    },
+    {
+      "file": "decorative-7edf014ccb22.json",
+      "type": "decorative",
+      "count": 2000
+    },
+    {
+      "file": "decorative-a7d378feaf09.json",
+      "type": "decorative",
+      "count": 2000
+    },
+    {
+      "file": "decorative-a0ca316cbaf3.json",
+      "type": "decorative",
+      "count": 2000
+    },
+    {
+      "file": "decorative-8b8f16ca2064.json",
+      "type": "decorative",
+      "count": 2000
+    },
+    {
+      "file": "decorative-6fc1105199ff.json",
+      "type": "decorative",
+      "count": 2000
+    },
+    {
+      "file": "decorative-3d8b27700ae1.json",
+      "type": "decorative",
+      "count": 91
+    },
+    {
+      "file": "drawing-0eca868f6e14.json",
+      "type": "drawing",
+      "count": 2000
+    },
+    {
+      "file": "drawing-c25d28fb4fb9.json",
+      "type": "drawing",
+      "count": 2000
+    },
+    {
+      "file": "drawing-bd031ac15bac.json",
+      "type": "drawing",
+      "count": 2000
+    },
+    {
+      "file": "drawing-367b51cc694e.json",
+      "type": "drawing",
+      "count": 791
+    },
+    {
+      "file": "painting-cc0da3fb2b6b.json",
+      "type": "painting",
+      "count": 2000
+    },
+    {
+      "file": "painting-32a5fa969bd0.json",
+      "type": "painting",
+      "count": 916
+    },
+    {
+      "file": "photograph-94a38026eb2e.json",
+      "type": "photograph",
+      "count": 2000
+    },
+    {
+      "file": "photograph-5ecc201740e7.json",
+      "type": "photograph",
+      "count": 778
+    },
+    {
+      "file": "print-8d8f227cbeea.json",
+      "type": "print",
+      "count": 2000
+    },
+    {
+      "file": "print-519b7f56f43a.json",
+      "type": "print",
+      "count": 2000
+    },
+    {
+      "file": "print-5ecc481511e8.json",
+      "type": "print",
+      "count": 2000
+    },
+    {
+      "file": "print-62be8ec98859.json",
+      "type": "print",
+      "count": 2000
+    },
+    {
+      "file": "print-1cc05e4ee884.json",
+      "type": "print",
+      "count": 2000
+    },
+    {
+      "file": "print-21fc9ad43cc7.json",
+      "type": "print",
+      "count": 2000
+    },
+    {
+      "file": "print-7ffdf3fa07d8.json",
+      "type": "print",
+      "count": 2000
+    },
+    {
+      "file": "print-6497557050ab.json",
+      "type": "print",
+      "count": 2000
+    },
+    {
+      "file": "print-64f50f006387.json",
+      "type": "print",
+      "count": 2000
+    },
+    {
+      "file": "print-09f0b304a657.json",
+      "type": "print",
+      "count": 2000
+    },
+    {
+      "file": "print-406d6e55b6b0.json",
+      "type": "print",
+      "count": 2000
+    },
+    {
+      "file": "print-d92d92f5af57.json",
+      "type": "print",
+      "count": 2000
+    },
+    {
+      "file": "print-45ac47c7b905.json",
+      "type": "print",
+      "count": 2000
+    },
+    {
+      "file": "print-3498b9e9066e.json",
+      "type": "print",
+      "count": 1790
+    },
+    {
+      "file": "sculpture-4f74d0b21ca7.json",
+      "type": "sculpture",
+      "count": 2000
+    },
+    {
+      "file": "sculpture-2d1cbd5b034d.json",
+      "type": "sculpture",
+      "count": 1495
+    }
+  ]
+}
